@@ -59,6 +59,19 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Dashboard
                             </a>
+
+                            <div class="sb-sidenav-menu-heading">Employee</div>
+                            <a class="nav-link @if(Route::current()->getName() == 'add_new_employee') active @endif" href="{{route('add_new_employee')}}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-user-plus"></i></div>
+                                Add New Employee
+                            </a>
+                            <a class="nav-link @if(Route::current()->getName() == 'view_all_employees') active @endif" href="{{route('view_all_employees')}}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
+                                View All Employees
+                            </a>
+
+                            <div class="sb-sidenav-menu-heading">Employer</div>
+                            
                             <div class="sb-sidenav-menu-heading">Interface</div>
                             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
@@ -143,7 +156,7 @@
         <script src="js/scripts.js"></script>
         <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
         <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
-        <script src="assets/demo/datatables-demo.js"></script>
+        <script src="{{ asset('js/datatables-demo.js') }}"></script>
 
         <!-- Messenger js -->
         <script src="{{ asset('plugins/messenger/js/messenger.min.js') }}" type="text/javascript"></script>

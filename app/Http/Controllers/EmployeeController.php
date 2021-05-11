@@ -64,5 +64,7 @@ class EmployeeController extends Controller
         }
     }
 
+    public function viewAllEmployees(){
 
+    }
 }
