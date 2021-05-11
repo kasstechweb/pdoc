@@ -20,3 +20,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/add_new_employee', [\App\Http\Controllers\EmployeeController::class, 'addNewEmployee'])->name('add_new_employee');
+Route::post('/add_new_employee', [\App\Http\Controllers\EmployeeController::class, 'storeNewEmployee'])->name('store_new_employee');
+
+
