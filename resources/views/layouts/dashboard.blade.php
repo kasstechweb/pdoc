@@ -71,7 +71,12 @@
                             </a>
 
                             <div class="sb-sidenav-menu-heading">Employer</div>
-                            
+                            <a class="nav-link @if(Route::current()->getName() == 'add_new_employer') active @endif" href="{{route('add_new_employer')}}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-user-plus"></i></div>
+                                Add New Employer
+                            </a>
+                            <div class="sb-sidenav-menu-heading">Payroll</div>
+
                             <div class="sb-sidenav-menu-heading">Interface</div>
                             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
@@ -136,7 +141,7 @@
                 <main>
                     @yield('content')
                 </main>
-                <footer class="py-4 bg-light mt-auto">
+               <!-- <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid">
                         <div class="d-flex align-items-center justify-content-between small">
                             <div class="text-muted">Copyright &copy; Your Website 2021</div>
@@ -147,7 +152,7 @@
                             </div>
                         </div>
                     </div>
-                </footer>
+                </footer> -->
             </div>
         </div>
 

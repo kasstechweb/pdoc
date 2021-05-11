@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Validator;
 class EmployeeController extends Controller
 {
     public function addNewEmployee() {
-        return view('dashboard.add_new_employee');
+        return view('dashboard.employee.add');
     }
 
 
