@@ -6,7 +6,7 @@
 
         <div class="col-lg-7">
             <div class="card shadow-lg border-0 rounded-lg mt-5">
-                <div class="card-header"><h3 class="text-center font-weight-light my-4">Create Account</h3></div>
+                <div class="card-header"><h3 class="text-center font-weight-light my-4">Create Employer Account</h3></div>
                 <div class="card-body">
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
@@ -31,6 +31,7 @@
                                     </span>
                             @enderror
                         </div>
+
                         <div class="form-row">
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -51,6 +52,52 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="form-row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="small mb-1" for="province">Province of Employment</label>
+                                    <select name="province" id="province" class="form-control @error('province') is-invalid @enderror" id="province" required>
+                                        <option value="">Select...</option>
+                                        @foreach($provinces as $province)
+                                            <option @if(old('province') == $province->id) selected @endif value="{{ $province->id }}">{{ $province->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    {{--                                <input class="form-control py-4 @error('province') is-invalid @enderror" id="province" type="text" name="province" value="{{ old('province') }}"/>--}}
+
+                                    @error('province')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="small mb-1" for="pbn">Employer Payroll Business Number</label>
+                                    <input class="form-control py-4 @error('pbn') is-invalid @enderror" id="pbn" type="text" name="pbn" value="{{ old('pbn') }}" />
+
+                                    @error('pbn')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="small mb-1" for="address">Employer Address</label>
+                            <input class="form-control py-4 @error('address') is-invalid @enderror" id="address" type="text" aria-describedby="emailHelp" name="address" value="{{ old('address') }}" required />
+
+                            @error('address')
+                            <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                            @enderror
+                        </div>
+
+
                         <div class="form-group mt-4 mb-0">
                             <button type="submit" class="btn btn-primary btn-block">
                                 Create Account

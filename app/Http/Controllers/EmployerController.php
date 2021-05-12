@@ -48,4 +48,8 @@ class EmployerController extends Controller
             return redirect(route('add_new_employer'));
         }
     }
+
+    public function viewAllEmployers(){
+
+    }
 }

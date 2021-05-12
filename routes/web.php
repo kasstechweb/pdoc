@@ -29,3 +29,4 @@ Route::get('/view_all_employees', [EmployeeController::class, 'viewAllEmployees'
 
 Route::get('/add_new_employer', [EmployerController::class, 'addNewEmployer'])->name('add_new_employer');
 Route::post('/add_new_employer', [EmployerController::class, 'storeNewEmployer'])->name('store_new_employer');
+Route::get('/view_all_employers', [EmployerController::class, 'viewAllEmployers'])->name('view_all_employers');

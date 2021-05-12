@@ -20,6 +20,8 @@
 {{--        <link href="css/styles.css" rel="stylesheet" />--}}
         <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
+
+        @yield('header')
     </head>
     <body class="sb-nav-fixed">
 
@@ -75,6 +77,11 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-user-plus"></i></div>
                                 Add New Employer
                             </a>
+                            <a class="nav-link @if(Route::current()->getName() == 'view_all_employers') active @endif" href="{{route('view_all_employers')}}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
+                                View All Employers
+                            </a>
+
                             <div class="sb-sidenav-menu-heading">Payroll</div>
 
                             <div class="sb-sidenav-menu-heading">Interface</div>

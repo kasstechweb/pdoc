@@ -65,6 +65,8 @@ class EmployeeController extends Controller
     }
 
     public function viewAllEmployees(){
-
+        $employees = Employee::all();
+        return view('dashboard.employee.view_all')
+            ->with('employees', $employees);
     }
 }
