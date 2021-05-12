@@ -51,16 +51,16 @@
                             <td>{{ $employee->hire_date }}</td>
                             <td>{{ $employee->termination_date }}</td>
                             <td>{{ $employee->sin }}</td>
-                            <td>
-                                <button class="btn btn-success">
+                            <td class="m-auto">
+                                <a class="btn btn-success" href="{{ route('employee_hours', ['id' => $employee->id]) }}">
                                     <i class="far fa-clock"></i>
-                                </button>
-                                <button class="btn btn-primary">
+                                </a>
+                                <a class="btn btn-primary">
                                     <i class="fas fa-pen"></i>
-                                </button>
-                                <button class="btn btn-danger">
+                                </a>
+                                <a class="btn btn-danger">
                                     <i class="fas fa-trash-alt"></i>
-                                </button>
+                                </a>
                             </td>
                         </tr>
                     @endforeach

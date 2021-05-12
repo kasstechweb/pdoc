@@ -24,10 +24,15 @@ Auth::routes();
 
 Route::get('/home', [DashboardController::class, 'viewHome'])->name('home');
 
+// Employee
 Route::get('/add_new_employee', [EmployeeController::class, 'addNewEmployee'])->name('add_new_employee');
 Route::post('/add_new_employee', [EmployeeController::class, 'storeNewEmployee'])->name('store_new_employee');
 Route::get('/view_all_employees', [EmployeeController::class, 'viewAllEmployees'])->name('view_all_employees');
+Route::get('/employee_hours/{id}', [EmployeeController::class, 'employeeHours'])->name('employee_hours');
+Route::post('/employee_hours', [EmployeeController::class, 'storeEmployeeHours'])->name('store_employee_hours');
 
+// Employer
 Route::get('/profile', [EmployerController::class, 'viewProfile'])->name('profile');
 Route::post('/profile', [EmployerController::class, 'updateProfile'])->name('update_profile');
+
 
