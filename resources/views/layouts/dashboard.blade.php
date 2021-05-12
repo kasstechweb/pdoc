@@ -23,32 +23,32 @@
 
         @yield('header')
     </head>
-    <body class="sb-nav-fixed">
+    <body class="sb-nav">
 
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-            <a class="navbar-brand" href="index.html">Start Bootstrap</a>
+            <a class="navbar-brand" href="{{ route('home') }}">Employer Service</a>
             <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
-            <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
-                <div class="input-group">
-                    <input class="form-control" type="text" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" />
-                    <div class="input-group-append">
-                        <button class="btn btn-primary" type="button"><i class="fas fa-search"></i></button>
-                    </div>
-                </div>
-            </form>
+{{--            <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">--}}
+{{--                <div class="input-group">--}}
+{{--                    <input class="form-control" type="text" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" />--}}
+{{--                    <div class="input-group-append">--}}
+{{--                        <button class="btn btn-primary" type="button"><i class="fas fa-search"></i></button>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </form>--}}
             <!-- Navbar-->
-            <ul class="navbar-nav ml-auto ml-md-0">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="userDropdown" href="#!" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-                </li>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                    <a class="dropdown-item" href="#!">Settings</a>
-                    <a class="dropdown-item" href="#!">Activity Log</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="login.html">Logout</a>
-                </div>
-            </ul>
+{{--            <ul class="navbar-nav ml-auto ml-md-0">--}}
+{{--                <li class="nav-item dropdown">--}}
+{{--                    <a class="nav-link dropdown-toggle" id="userDropdown" href="#!" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>--}}
+{{--                </li>--}}
+{{--                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">--}}
+{{--                    <a class="dropdown-item" href="#!">Settings</a>--}}
+{{--                    <a class="dropdown-item" href="#!">Activity Log</a>--}}
+{{--                    <div class="dropdown-divider"></div>--}}
+{{--                    <a class="dropdown-item" href="login.html">Logout</a>--}}
+{{--                </div>--}}
+{{--            </ul>--}}
         </nav>
 
         <div id="layoutSidenav">
@@ -57,7 +57,7 @@
                     <div class="sb-sidenav-menu">
                         <div class="nav">
                             <div class="sb-sidenav-menu-heading">Core</div>
-                            <a class="nav-link" href="index.html">
+                            <a class="nav-link @if(Route::current()->getName() == 'add_new_employee') active @endif" href="{{route('home')}}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Dashboard
                             </a>
@@ -71,18 +71,39 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
                                 View All Employees
                             </a>
-
-                            <div class="sb-sidenav-menu-heading">Employer</div>
-                            <a class="nav-link @if(Route::current()->getName() == 'add_new_employer') active @endif" href="{{route('add_new_employer')}}">
-                                <div class="sb-nav-link-icon"><i class="fas fa-user-plus"></i></div>
-                                Add New Employer
-                            </a>
-                            <a class="nav-link @if(Route::current()->getName() == 'view_all_employers') active @endif" href="{{route('view_all_employers')}}">
-                                <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
-                                View All Employers
-                            </a>
-
                             <div class="sb-sidenav-menu-heading">Payroll</div>
+
+                            <div class="sb-sidenav-menu-heading">Account</div>
+                            <a class="nav-link @if(Route::current()->getName() == 'profile') active @endif" href="{{route('profile')}}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-user-alt"></i></div>
+                                Profile
+                            </a>
+                            <a class="nav-link @if(Route::current()->getName() == 'password.request') active @endif" href="{{route('password.request')}}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-key"></i></div>
+                                Reset Password
+                            </a>
+                            <a class="nav-link @if(Route::current()->getName() == 'login') active @endif" href="{{route('logout')}}"
+                               onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                <div class="sb-nav-link-icon"><i class="fas fa-power-off"></i></div>
+                                {{ __('Logout') }}
+
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
+                            </a>
+
+
+{{--                            <a class="nav-link @if(Route::current()->getName() == 'add_new_employer') active @endif" href="{{route('add_new_employer')}}">--}}
+{{--                                <div class="sb-nav-link-icon"><i class="fas fa-user-plus"></i></div>--}}
+{{--                                Add New Employer--}}
+{{--                            </a>--}}
+{{--                            <a class="nav-link @if(Route::current()->getName() == 'view_all_employers') active @endif" href="{{route('view_all_employers')}}">--}}
+{{--                                <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>--}}
+{{--                                View All Employers--}}
+{{--                            </a>--}}
+
+
 
                             <div class="sb-sidenav-menu-heading">Interface</div>
                             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
@@ -140,7 +161,7 @@
                     </div>
                     <div class="sb-sidenav-footer">
                         <div class="small">Logged in as:</div>
-                        Start Bootstrap
+                        {{ Auth::user()->name }}
                     </div>
                 </nav>
             </div>

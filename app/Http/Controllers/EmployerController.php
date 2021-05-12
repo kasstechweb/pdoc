@@ -3,19 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employer;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class EmployerController extends Controller
 {
-    public function addNewEmployer() {
+    public function viewProfile() {
         $provinces = DB::table('provinces')->get();
-        return view('dashboard.employer.add')
+        return view('dashboard.employer.profile')
             ->with('provinces', $provinces);
     }
 
-    public function storeNewEmployer(Request $request){
+    public function updateProfile(Request $request){
         $messages = [
             'pbn.required' => 'Payroll Business Number is required.',
         ];
@@ -29,11 +31,11 @@ class EmployerController extends Controller
             ], $messages);
 
             if ($validator->fails()) {
-                return redirect(route('add_new_employer'))
+                return redirect(route('profile'))
                     ->withErrors($validator)
                     ->withInput();
             }else { // pass validation
-                $employer = new Employer();
+                $employer = User::find(Auth::id());
                 $employer->name = $request->input('name');
                 $employer->address = $request->input('address');
                 $employer->pbn = $request->input('pbn');
@@ -41,11 +43,11 @@ class EmployerController extends Controller
 
                 $employer->save();
 
-                return redirect(route('add_new_employer'))
-                    ->with('msg', 'Adding Employer Success!');
+                return redirect(route('profile'))
+                    ->with('msg', 'Updating Profile Success!');
             }
         }else {
-            return redirect(route('add_new_employer'));
+            return redirect(route('profile'));
         }
     }
 

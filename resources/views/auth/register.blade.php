@@ -59,6 +59,7 @@
                                     <label class="small mb-1" for="province">Province of Employment</label>
                                     <select name="province" id="province" class="form-control @error('province') is-invalid @enderror" id="province" required>
                                         <option value="">Select...</option>
+                                        {{$provinces = DB::table('provinces')->get()}}
                                         @foreach($provinces as $province)
                                             <option @if(old('province') == $province->id) selected @endif value="{{ $province->id }}">{{ $province->name }}</option>
                                         @endforeach

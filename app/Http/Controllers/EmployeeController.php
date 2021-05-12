@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\Validator;
 
 class EmployeeController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function addNewEmployee() {
         return view('dashboard.employee.add');
     }
@@ -54,6 +59,8 @@ class EmployeeController extends Controller
                 }else {
                     $employee->cpp_exempt = 0;
                 }
+
+                $employee->employer_id = auth()->id();
                 $employee->save();
 
                 return redirect(route('add_new_employee'))
