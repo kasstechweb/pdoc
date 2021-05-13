@@ -1,7 +1,7 @@
 @extends('layouts.dashboard')
 
 @section('title')
-    PDOC - View All Employees
+    PDOC - Employee Hours
 @endsection
 
 @section('header')
@@ -20,15 +20,24 @@
 @endsection
 
 @section('content')
-
     <div class="container-fluid">
         <h1 class="mt-4"></h1>
         <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-            <li class="breadcrumb-item active">Employer</li>
-            <li class="breadcrumb-item active">View All Employees</li>
+            <li class="breadcrumb-item active">Hours</li>
+            <li class="breadcrumb-item active">
+            @if($action == 'add_hours')
+                Add Hours
+            @elseif($action == 'view_hours_history')
+                Hours History
+            @elseif($action == 'view_all')
+                    View All Employees
+            @endif
+
+            </li>
         </ol>
         <div class="card mb-4">
+            {{--            <div class="card-header">Add Employee Hours</div>--}}
             <div class="card-body table-responsive">
                 <table id="example" class="display nowrap " cellspacing="0" width="100%">
                     <thead>
@@ -55,14 +64,27 @@
 {{--                            <td>{{ $employee->termination_date }}</td>--}}
                             <td>{{ $employee->sin }}</td>
                             <td class="m-auto">
-                                <a class="btn btn-primary">
-                                    <i class="fas fa-pen"></i>
-                                    Edit
-                                </a>
-                                <a class="btn btn-danger">
-                                    <i class="fas fa-trash-alt"></i>
-                                    Delete
-                                </a>
+                                @if($action == 'add_hours')
+                                    <a class="btn btn-success" href="{{ route('add_employee_hours', ['id' => $employee->id]) }}">
+                                        <i class="fas fa-user-clock"></i>
+                                        Add Hours
+                                    </a>
+                                @elseif($action == 'view_hours_history')
+                                    <a class="btn btn-success" href="{{ route('employee_hours', ['id' => $employee->id]) }}">
+                                        <i class="fas fa-clock"></i>
+                                        View Hours History
+                                    </a>
+                                @elseif($action == 'view_all')
+                                    <a class="btn btn-primary">
+                                        <i class="fas fa-pen"></i>
+                                        Edit
+                                    </a>
+                                    <a class="btn btn-danger">
+                                        <i class="fas fa-trash-alt"></i>
+                                        Delete
+                                    </a>
+                                @endif
+
                             </td>
                         </tr>
                     @endforeach
@@ -72,8 +94,8 @@
         </div>
     </div>
 
-
 @endsection
+
 @section('after_load')
     <script type="text/javascript">
         function format(value) {

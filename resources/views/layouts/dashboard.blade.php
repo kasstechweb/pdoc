@@ -67,10 +67,27 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-user-plus"></i></div>
                                 Add New Employee
                             </a>
-                            <a class="nav-link @if(Route::current()->getName() == 'view_all_employees') active @endif" href="{{route('view_all_employees')}}">
+                            <a class="nav-link
+                                @if(Route::current()->getName() == 'view_all_employees' && $action == 'view_all') active @endif"
+                               href="{{route('view_all_employees', ['action' => 'view_all'])}}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
                                 View All Employees
                             </a>
+
+                            <div class="sb-sidenav-menu-heading">Hours</div>
+                            <a class="nav-link
+                                @if(Route::current()->getName() == 'view_all_employees' && $action == 'add_hours') active @endif"
+                               href="{{route('view_all_employees', ['action' => 'add_hours'])}}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-user-clock"></i></div>
+                                Add Hours
+                            </a>
+                            <a class="nav-link
+                                @if(Route::current()->getName() == 'view_all_employees' && $action == 'view_hours_history') active @endif"
+                               href="{{route('view_all_employees', ['action' => 'view_hours_history'])}}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-clock"></i></div>
+                                View Hours History
+                            </a>
+
                             <div class="sb-sidenav-menu-heading">Payroll</div>
 
                             <div class="sb-sidenav-menu-heading">Account</div>
