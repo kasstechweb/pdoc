@@ -30,6 +30,7 @@ Route::post('/add_new_employee', [EmployeeController::class, 'storeNewEmployee']
 Route::get('/view_all_employees', [EmployeeController::class, 'viewAllEmployees'])->name('view_all_employees');
 Route::get('/employee_hours/{id}', [EmployeeController::class, 'employeeHours'])->name('employee_hours');
 Route::post('/employee_hours', [EmployeeController::class, 'storeEmployeeHours'])->name('store_employee_hours');
+Route::post('/employee_hours_history', [EmployeeController::class, 'employeeHoursHistory'])->name('employee_hours_history');
 
 // Employer
 Route::get('/profile', [EmployerController::class, 'viewProfile'])->name('profile');

@@ -21,7 +21,6 @@ class CreateHoursTable extends Migration
             $table->decimal('work_hours');
             $table->boolean('is_state_holiday');
             $table->boolean('is_over_time');
-            $table->decimal('over_time_hours')->nullable();
             $table->timestamps();
 
             $table->foreign('employee_id')->references('id')->on('employees');

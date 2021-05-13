@@ -22,15 +22,15 @@
 @section('content')
 
     <div class="container-fluid">
-        <h1 class="mt-4">View All Employees</h1>
+        <h1 class="mt-4"></h1>
         <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
             <li class="breadcrumb-item active">Employer</li>
             <li class="breadcrumb-item active">View All Employees</li>
         </ol>
         <div class="card mb-4">
-            <div class="card-body">
-                <table id="example" class="display nowrap" cellspacing="0" width="100%">
+            <div class="card-body table-responsive">
+                <table id="example" class="display nowrap " cellspacing="0" width="100%">
                     <thead>
                     <tr>
                         <th></th>

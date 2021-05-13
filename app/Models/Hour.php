@@ -7,5 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Hour extends Model
 {
+    protected $dates = ['work_date'];
     use HasFactory;
+
+
 }

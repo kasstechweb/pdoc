@@ -80,10 +80,31 @@ class EmployeeController extends Controller
     }
 
     public function employeeHours($id){
-        $employees = Employee::all();
+//        $employees = Employee::all();
         return view('dashboard.employee.hours')
-            ->with('employees', $employees)
-            ->with('employee_id', $id);
+//            ->with('employees', $employees)
+            ->with('employee_id', $id)
+            ->with('hours_history', null)
+            ->with('from_date', null)
+            ->with('to_date', null);
+    }
+
+    public function employeeHoursHistory(Request $request){
+        $employee_id = $request->input('employee_id');
+        $from_date = $request->input('from_date');
+        $to_date = $request->input('to_date');
+        $hours = Hour::where('employee_id', $employee_id)->whereBetween('work_date', [$from_date, $to_date])->get();
+        return view('dashboard.employee.hours')
+//            ->with('employees', $employees)
+            ->with('employee_id', $employee_id)
+            ->with('hours_history', $hours)
+            ->with('from_date', $from_date)
+            ->with('to_date', $to_date);
+//        dd($hours);
+//        $employees = Employee::all();
+//        return view('dashboard.employee.hours')
+//            ->with('employees', $employees)
+//            ->with('employee_id', $id);
     }
 
     public function storeEmployeeHours(Request $request) {
@@ -91,7 +112,7 @@ class EmployeeController extends Controller
             $validator = Validator::make($request->all(), [
                 'work_date' => 'required',
                 'work_hours' => 'required|numeric|between:0,99.99',
-                'over_time' => 'numeric|between:0,99.99',
+//                'over_time' => 'numeric|between:0,99.99',
             ]);
 
             if ($validator->fails()) {
@@ -107,10 +128,8 @@ class EmployeeController extends Controller
                 }else {
                     $hours->is_state_holiday = 0;
                 }
-
-                if ($request->input('over_time') != null) {
+                if ($request->input('over_time') == 'on') {
                     $hours->is_over_time = 1;
-                    $hours->over_time_hours = $request->input('over_time');
                 }else {
                     $hours->is_over_time = 0;
                 }
