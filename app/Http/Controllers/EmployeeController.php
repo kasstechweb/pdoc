@@ -79,15 +79,15 @@ class EmployeeController extends Controller
 //            ->with('employees', $employees);
 //    }
 
-    public function employeeHours($id){
-//        $employees = Employee::all();
-        return view('dashboard.employee.hours')
-//            ->with('employees', $employees)
-            ->with('employee_id', $id)
-            ->with('hours_history', null)
-            ->with('from_date', null)
-            ->with('to_date', null);
-    }
+//    public function employeeHours($id){
+////        $employees = Employee::all();
+//        return view('dashboard.employee.hours')
+////            ->with('employees', $employees)
+//            ->with('employee_id', $id)
+//            ->with('hours_history', null)
+//            ->with('from_date', null)
+//            ->with('to_date', null);
+//    }
 
     public function employeeHoursHistory(Request $request){
         $employee_id = $request->input('employee_id');

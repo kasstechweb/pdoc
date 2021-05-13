@@ -70,7 +70,7 @@
                                         Add Hours
                                     </a>
                                 @elseif($action == 'view_hours_history')
-                                    <a class="btn btn-success" href="{{ route('employee_hours', ['id' => $employee->id]) }}">
+                                    <a class="btn btn-success" href="{{ route('view_employee_hours', ['id' => $employee->id]) }}">
                                         <i class="fas fa-clock"></i>
                                         View Hours History
                                     </a>
