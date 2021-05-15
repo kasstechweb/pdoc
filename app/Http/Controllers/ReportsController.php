@@ -20,11 +20,18 @@ class ReportsController extends Controller
         $frequencies = DB::table('frequency')->get();
         if ($request->method() == 'POST') {
             $employees = Employee::all();
+            // get previous pay stubs same date and frequency using pay date and frequency
+            $paystubs = Paystub::where([
+                ['paid_date', '=',$request->input('payment_date')],
+                ['pay_frequency', '=', $request->input('frequency')]
+                ])->get();
+
             return view('dashboard.reports.paystubs_form')
                 ->with('frequencies', $frequencies)
                 ->with('payment_date', $request->input('payment_date'))
                 ->with('employees', $employees)
-                ->with('freq', $request->input('frequency'));
+                ->with('freq', $request->input('frequency'))
+                ->with('paystubs', $paystubs);
         }else {
             return view('dashboard.reports.paystubs_form')
                 ->with('frequencies', $frequencies)

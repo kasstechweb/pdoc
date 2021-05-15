@@ -125,19 +125,30 @@
                                 {{--                            <td>{{ $employee->termination_date }}</td>--}}
                                 <td>{{ $employee->sin }}</td>
                                 <td class="m-auto">
-                                    <a id="download_link" onclick="pdoc_ajax({{ $employee->id }});" class="btn btn-success" href="javascript:void(0);">
-                                        <div class="d-flex justify-content-center">
-                                            <div id="spinner" class="spinner-border" style="display: none;" role="status">
-                                                <span class="sr-only">Loading...</span>
-                                            </div>
-                                        </div>
-                                        <span id="btn_text">
-                                             <i class="fas fa-file-invoice-dollar"></i>
-                                            Calculate Paystub
-                                        </span>
-
+                                @foreach($paystubs as $paystub)
+                                    @if($paystub->employee_id == $employee->id)
+                                        <a class="btn btn-success" id="btn_text_download-{{ $employee->id }}" href="#">
+                                            <span>
+                                                 <i class="fas fa-download"></i>
+                                                Download Paystub
+                                            </span>
                                         </a>
-                                    </td>
+                                    @else
+                                            <a id="download_link" onclick="pdoc_ajax({{ $employee->id }});" class="btn btn-success" href="javascript:void(0);">
+                                                <div class="d-flex justify-content-center">
+                                                    <div id="spinner-{{ $employee->id }}" class="spinner-border" style="display: none;" role="status">
+                                                        <span class="sr-only">Loading...</span>
+                                                    </div>
+                                                </div>
+                                                <span id="btn_text-{{ $employee->id }}">
+                                                     <i class="fas fa-file-invoice-dollar"></i>
+                                                    Calculate Paystub
+                                                </span>
+                                            </a>
+                                    @endif
+                                @endforeach
+
+                                </td>
                                 </tr>
                             @endforeach
                             </tbody>
@@ -178,8 +189,9 @@
             }
 
             function pdoc_ajax(employee_id){
-                var spinner = document.getElementById('spinner');
-                var btn_text = document.getElementById('btn_text');
+                var spinner = document.getElementById('spinner-'+employee_id);
+                var btn_text = document.getElementById('btn_text-'+employee_id);
+                var btn_text_download = document.getElementById('btn_text_download-'+employee_id);
 
                 var freq = document.getElementById('frequency').value;
                 var pay_date = document.getElementById('payment_date').value;
@@ -202,6 +214,11 @@
                             pay_date: pay_date
                         },
                         success: function (data) {
+                            if (data.pdoc_result.status == 'success') {
+                                spinner.style.display = 'none';
+                                btn_text_download.style.display = 'block';
+                            }
+                            //data.pdoc_result.status
                             console.log(data)
                         }
                     });
