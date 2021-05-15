@@ -11,11 +11,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3f4fd3e6-61ca-443e-855e-b1ffe3375a0a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/resources/views/dashboard/hours/history.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Http/Controllers/ReportsController.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Models/Paystub.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/pdoc/simple_html_dom.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/database/migrations/2021_05_13_133433_create_paystubs_table.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/database/migrations/2021_05_14_110228_create_frequency_table.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/cra-cookies.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/dashboard/reports/paystubs.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/dashboard/reports/paystubs_form.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/EmployeeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/EmployeeController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/EmployerController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/EmployerController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/HoursController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/HoursController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/dashboard/all_employees.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/dashboard/all_employees.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/css/my.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/my.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/layouts/dashboard.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layouts/dashboard.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -25,7 +35,9 @@
   </component>
   <component name="ComposerSettings" doNotAsk="true" synchronizationState="SYNCHRONIZE">
     <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
-    <execution />
+    <execution>
+      <executable path="composer" />
+    </execution>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -184,7 +196,9 @@
       <option name="presentableId" value="Default" />
       <updated>1620629996557</updated>
       <workItem from="1620630002104" duration="38539000" />
-      <workItem from="1620793712529" duration="42272000" />
+      <workItem from="1620793712529" duration="70446000" />
+      <workItem from="1621059587752" duration="392000" />
+      <workItem from="1621060148059" duration="17252000" />
     </task>
     <servers />
   </component>
@@ -207,10 +221,22 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="444" y="138" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1620896634571">
+    <state x="394" y="119" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1621060155996">
       <screen x="62" y="0" width="1304" height="768" />
     </state>
-    <state x="444" y="138" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/62.0.1304.768@62.0.1304.768" timestamp="1620896634571" />
+    <state x="394" y="119" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/62.0.1304.768@62.0.1304.768" timestamp="1621060155996" />
+    <state x="502" y="100" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1620917461228">
+      <screen x="62" y="0" width="1304" height="768" />
+    </state>
+    <state x="502" y="100" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/62.0.1304.768@62.0.1304.768" timestamp="1620917461228" />
+    <state x="444" y="138" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1620921357742">
+      <screen x="62" y="0" width="1304" height="768" />
+    </state>
+    <state x="444" y="138" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/62.0.1304.768@62.0.1304.768" timestamp="1620921357742" />
+    <state x="477" y="294" key="ComposerInitDialogKey" timestamp="1620985562887">
+      <screen x="62" y="0" width="1304" height="768" />
+    </state>
+    <state x="477" y="294" key="ComposerInitDialogKey/62.0.1304.768@62.0.1304.768" timestamp="1620985562887" />
     <state width="498" height="446" key="SwitcherDM" timestamp="1620817884147">
       <screen x="62" y="0" width="1304" height="768" />
     </state>

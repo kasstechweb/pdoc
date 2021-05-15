@@ -89,23 +89,23 @@ class EmployeeController extends Controller
 //            ->with('to_date', null);
 //    }
 
-    public function employeeHoursHistory(Request $request){
-        $employee_id = $request->input('employee_id');
-        $from_date = $request->input('from_date');
-        $to_date = $request->input('to_date');
-        $hours = Hour::where('employee_id', $employee_id)->whereBetween('work_date', [$from_date, $to_date])->get();
-        return view('dashboard.employee.hours')
-//            ->with('employees', $employees)
-            ->with('employee_id', $employee_id)
-            ->with('hours_history', $hours)
-            ->with('from_date', $from_date)
-            ->with('to_date', $to_date);
-//        dd($hours);
-//        $employees = Employee::all();
+//    public function employeeHoursHistory(Request $request){
+//        $employee_id = $request->input('employee_id');
+//        $from_date = $request->input('from_date');
+//        $to_date = $request->input('to_date');
+//        $hours = Hour::where('employee_id', $employee_id)->whereBetween('work_date', [$from_date, $to_date])->get();
 //        return view('dashboard.employee.hours')
-//            ->with('employees', $employees)
-//            ->with('employee_id', $id);
-    }
+////            ->with('employees', $employees)
+//            ->with('employee_id', $employee_id)
+//            ->with('hours_history', $hours)
+//            ->with('from_date', $from_date)
+//            ->with('to_date', $to_date);
+////        dd($hours);
+////        $employees = Employee::all();
+////        return view('dashboard.employee.hours')
+////            ->with('employees', $employees)
+////            ->with('employee_id', $id);
+//    }
 
 //    public function storeEmployeeHours(Request $request) {
 //        if ($request->method() == 'POST') {

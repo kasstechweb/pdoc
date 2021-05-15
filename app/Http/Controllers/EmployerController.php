@@ -11,6 +11,11 @@ use Illuminate\Support\Facades\Validator;
 
 class EmployerController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function viewProfile() {
         $provinces = DB::table('provinces')->get();
         return view('dashboard.employer.profile')

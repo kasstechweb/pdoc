@@ -88,7 +88,11 @@
                                 View Hours History
                             </a>
 
-                            <div class="sb-sidenav-menu-heading">Payroll</div>
+                            <div class="sb-sidenav-menu-heading">Reports</div>
+                            <a class="nav-link @if(Route::current()->getName() == 'paystubs_form') active @endif" href="{{route('paystubs_form')}}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-wallet"></i></div>
+                                paystubs
+                            </a>
 
                             <div class="sb-sidenav-menu-heading">Account</div>
                             <a class="nav-link @if(Route::current()->getName() == 'profile') active @endif" href="{{route('profile')}}">
@@ -201,7 +205,11 @@
             </div>
         </div>
 
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>
+{{--        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>--}}
+        <script
+            src="https://code.jquery.com/jquery-3.4.1.min.js"
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+            crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="{{ asset('js/scripts.js') }}"></script>
         <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>

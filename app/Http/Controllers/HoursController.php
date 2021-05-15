@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\Validator;
 
 class HoursController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function allEmployeesView($action){
         $employees = Employee::all();
         return view('dashboard.all_employees')
@@ -77,10 +82,6 @@ class HoursController extends Controller
                 ->with('from_date', null)
                 ->with('to_date', null);
         }
-    }
-
-    public function getHoursHistory(){
-
     }
 
 }

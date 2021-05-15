@@ -5,6 +5,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EmployerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HoursController;
+use App\Http\Controllers\ReportsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,6 +39,10 @@ Route::get('/employee/{action}', [HoursController::class, 'allEmployeesView'])->
 Route::any('/add_employee_hours/{id}', [HoursController::class, 'addHours'])->name('add_employee_hours');
 Route::any('/view_employee_hours/{id}', [HoursController::class, 'hoursHistoryView'])->name('view_employee_hours');
 
+// reports
+Route::any('/paystubs', [ReportsController::class, 'paystubsForm'])->name('paystubs_form');
+Route::get('/pdoc', [ReportsController::class, 'pdocAjax'])->name('pdoc');
+Route::get('/test', [ReportsController::class, 'pdoc']);
 // Employer
 Route::get('/profile', [EmployerController::class, 'viewProfile'])->name('profile');
 Route::post('/profile', [EmployerController::class, 'updateProfile'])->name('update_profile');
