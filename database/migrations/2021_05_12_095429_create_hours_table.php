@@ -18,7 +18,7 @@ class CreateHoursTable extends Migration
             $table->unsignedBigInteger('employee_id');
             $table->unsignedBigInteger('employer_id');
             $table->date('work_date');
-            $table->decimal('work_hours');
+            $table->decimal('work_hours', 13, 5);
             $table->boolean('is_state_holiday');
             $table->boolean('is_over_time');
             $table->timestamps();

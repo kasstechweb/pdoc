@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Employee;
 use App\Models\Hour;
+use App\Models\Paystub;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -44,6 +45,7 @@ class ReportsController extends Controller
 
     public function pdocAjax(Request $request){
         $employer_name = Auth::user()->name;
+        $employer_id = Auth::id();
         $province_id = Auth::user()->province_id;
         $provinces = DB::table('provinces')->where('id', '=', $province_id)->first();
         $employer_province = $provinces->name;
@@ -75,8 +77,10 @@ class ReportsController extends Controller
         }
 
         // do calculations
-        $hourly = $total_hours * $employee_rate;
-        $vac_pay = $hourly * 0.04;
+        $hourly = round($total_hours * $employee_rate, 2);
+        $vac_pay = round($hourly * 0.04, 2);
+        $stat_pay = $total_stat_hours * ($employee_rate * 1.5); //TODO::::: get it from settings
+        $overtime_pay = $total_overtime_hours * ($employee_rate * 2); // TODO::::::: get from settings
 
         // split pay date
         $payment_date = explode('-', $pay_date, 3);
@@ -85,8 +89,38 @@ class ReportsController extends Controller
         $day = $payment_date[2];
 
         $pdoc_result = $this->pdoc($hourly, $vac_pay, $year, $month, $day, $employee_name, $employer_name, $employer_province, $frequency);
-//        dd($total_hourly);
+
+        $employee_cpp = $pdoc_result['values']['CPP'];
+        $employee_ei = $pdoc_result['values']['EI'];
+        $federal_tax = $pdoc_result['values']['federalTax'];
+        $employer_cpp = $pdoc_result['values2']['values']['employerCPP'];
+        $employer_ei = $pdoc_result['values2']['values']['employerEI'];
+
+        $net_pay = ($hourly + $vac_pay + $stat_pay + $overtime_pay ) - ($employee_cpp + $employee_ei + $federal_tax);
+        //        dd($total_hourly);
         //        $hourly = hours
+
+        // save in db pay stubs
+        $paystub = new Paystub();
+        $paystub->employee_id = $employee_id;
+        $paystub->employer_id = $employer_id;
+        $paystub->paid_date = $pay_date;
+        $paystub->hourly_qty = $total_hours;
+        $paystub->hourly_rate = $employee_rate;
+        $paystub->stat_qty = $total_stat_hours;
+        $paystub->stat_rate = '1.5';  // TODO::::::::::: get from settings
+        $paystub->vac_pay = $vac_pay;
+        $paystub->overtime_qty = $total_overtime_hours;
+        $paystub->overtime_rate = '2.0'; //TODO::::: get from settings
+        $paystub->cpp = $employer_cpp;
+        $paystub->ei = $employee_ei;
+        $paystub->federal_tax = $federal_tax;
+        $paystub->net_pay = $net_pay;
+        $paystub->pay_frequency = $frequency;
+        $paystub->employer_cpp = $employer_cpp;
+        $paystub->employer_ei = $employer_ei;
+        $paystub->save();
+
         return response()->json(array(
             'total hours'=> $total_hours,
             'total stat' => $total_stat_hours,
@@ -95,7 +129,13 @@ class ReportsController extends Controller
             'employee name' => $employee_name,
             'prov id' => $employer_province,
             'hourly' => $hourly,
-            'pdoc_result' => $pdoc_result
+            'vac pay' => $vac_pay,
+            'pdoc_result' => $pdoc_result,
+            'cpp' => $employee_cpp,
+            'ei' => $employee_ei,
+            'federal tax '=> $federal_tax,
+            'emp cpp' => $employer_cpp,
+            'emp ei' => $employer_ei
         ), 200);
     }
 //

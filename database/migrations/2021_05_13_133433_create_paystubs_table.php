@@ -18,20 +18,20 @@ class CreatePaystubsTable extends Migration
             $table->unsignedBigInteger('employee_id');
             $table->unsignedBigInteger('employer_id');
             $table->date('paid_date');
-            $table->decimal('hourly_qty');
-            $table->decimal('hourly_rate');
-            $table->decimal('stat_qty');
-            $table->decimal('stat_rate');
-            $table->decimal('vac_pay');
-            $table->decimal('overtime_qty');
-            $table->decimal('overtime_rate');
-            $table->decimal('cpp'); // from website
-            $table->decimal('ei'); // from website
-            $table->decimal('federal_tax');
-            $table->decimal('net_pay');
+            $table->decimal('hourly_qty', 13, 5);
+            $table->decimal('hourly_rate', 13, 5);
+            $table->decimal('stat_qty', 13, 5);
+            $table->decimal('stat_rate', 13, 5);
+            $table->decimal('vac_pay', 13, 5);
+            $table->decimal('overtime_qty', 13, 5);
+            $table->decimal('overtime_rate', 13, 5);
+            $table->decimal('cpp', 13, 5); // from website
+            $table->decimal('ei', 13, 5); // from website
+            $table->decimal('federal_tax', 13, 5);
+            $table->decimal('net_pay', 13, 5);
             $table->string('pay_frequency');
-            $table->decimal('employer_cpp'); // from website
-            $table->decimal('employer_ei'); // from website
+            $table->decimal('employer_cpp', 13, 5); // from website
+            $table->decimal('employer_ei', 13, 5); // from website
             $table->timestamps();
 
             $table->foreign('employee_id')->references('id')->on('employees');
