@@ -42,7 +42,8 @@ Route::any('/view_employee_hours/{id}', [HoursController::class, 'hoursHistoryVi
 // reports
 Route::any('/paystubs', [ReportsController::class, 'paystubsForm'])->name('paystubs_form');
 Route::get('/pdoc', [ReportsController::class, 'pdocAjax'])->name('pdoc');
-Route::get('/test', [ReportsController::class, 'pdoc']);
+Route::get('/paystubpdf', [ReportsController::class, 'paystubPdf'])->name('pastub_pdf');
+Route::get('/test', [ReportsController::class, 'testtttt']);
 // Employer
 Route::get('/profile', [EmployerController::class, 'viewProfile'])->name('profile');
 Route::post('/profile', [EmployerController::class, 'updateProfile'])->name('update_profile');

@@ -127,7 +127,7 @@
                                 <td class="m-auto">
                                 @foreach($paystubs as $paystub)
                                     @if($paystub->employee_id == $employee->id)
-                                        <a class="btn btn-success" id="btn_text_download-{{ $employee->id }}" href="#">
+                                        <a onclick="paystub_pdf({{$employee->id}}, '{{$freq}}', '{{$payment_date}}')" class="btn btn-success" id="btn_text_download-{{ $employee->id }}" href="javascript:void(0);">
                                             <span>
                                                  <i class="fas fa-download"></i>
                                                 Download Paystub
@@ -223,6 +223,37 @@
                         }
                     });
                 });
+            }
+
+            function paystub_pdf(employee_id, frequency, pay_date){
+                var get_request = 'employee_id=' + employee_id;
+                get_request += '&frequency=' + frequency;
+                get_request += '&pay_date=' + pay_date;
+
+                var first_date = new Date(pay_date);
+                first_date.setDate((first_date.getDate() - 15) + 1);
+                first_date = first_date.toLocaleDateString("en-CA");
+
+                get_request += '&first_date=' + first_date;
+
+                window.open('/paystubpdf?' + get_request, '_blank')
+                // $.ajax({
+                //     type: 'GET',
+                //     url: '/paystubpdf',
+                //     data: {
+                //         employee_id: employee_id,
+                //         frequency: frequency,
+                //         pay_date: pay_date
+                //     },
+                //     success: function (data) {
+                //         // if (data.pdoc_result.status == 'success') {
+                //         //     spinner.style.display = 'none';
+                //         //     btn_text_download.style.display = 'block';
+                //         // }
+                //         //data.pdoc_result.status
+                //         console.log(data)
+                //     }
+                // });
             }
 
 

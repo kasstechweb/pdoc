@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Employee;
 use App\Models\Hour;
 use App\Models\Paystub;
+use PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -144,6 +145,34 @@ class ReportsController extends Controller
             'emp cpp' => $employer_cpp,
             'emp ei' => $employer_ei
         ), 200);
+    }
+
+    public static function paystubPdf(Request $request){
+//        dd($request->employee_id.$request->pay_date.$request->frequency);
+//        return response()->json(array(
+//            'status'=> 'success',
+//        ), 200);
+        $data['employee_id'] = $request->employee_id;
+        $data['start_date'] = $request->first_date;
+        $data['pay_date'] = $request->pay_date;
+        $data['frequency'] = $request->frequency;
+        // retreive all records from db
+//        $employee = Employee::all();
+
+
+        // share data to view
+        view()->share('data',$data);
+        view()->share('pay_date', $request->pay_date);
+        $pdf = PDF::loadView('dashboard.reports.paystub_pdf', $data);
+
+        // download PDF file with download method
+
+        return $pdf->download('pdf_file.pdf');
+
+    }
+
+    public function testtttt(){
+        return view('dashboard.reports.paystub_pdf');
     }
 //
     public function pdoc($hourly, $vac_pay, $year, $month, $day, $employee_name, $employer_name, $province, $frequency){
