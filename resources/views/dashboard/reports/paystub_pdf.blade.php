@@ -40,24 +40,25 @@
             border-collapse: collapse;
         }
     </style>
+
 </head>
 <body>
 <p class="p-5 text-15"> <!-- CHANGE -->
-    Escapes Adventures Edmonton Inc. <br />
-    10534 82 AVE NW <br />
-    EDMONTON, AB T6E2A4
+    {{ $employer->name }} <br />
+    {{ $employer->address }}
+{{--    10534 82 AVE NW <br />--}}
+{{--    EDMONTON, AB T6E2A4--}}
 </p>
 <p class="p-5 text-15"> <!-- CHANGE -->
-    ANGELINE MANABAT<br >
-    13014-102 STREET NW<br >
-    EDMONTON, AB T5E 4J5
+    {{ $employee->name }}<br >
+    {{ $employee->address }}
 </p>
 
 <div class="dashed-top-border pt-1" > <!-- CHANGE -->
     <div class="width-25 text-10 text-bold text-left d-block">Employee Paystub</div>
     <div class="width-25 text-10 text-bold text-left d-block">Cheque number:</div>
-    <div class="width-25 text-10 text-bold text-left d-block">Pay Period: 2018-11-01 - 2018-11-15</div>
-    <div class="width-25 text-10 text-right text-bold d-block">Cheque Date: 2018-11-15</div>
+    <div class="width-25 text-10 text-bold text-left d-block">Pay Period: {{ $data['start_date'] }} - {{ $data['pay_date'] }}</div>
+    <div class="width-25 text-10 text-right text-bold d-block">Cheque Date: {{ $data['pay_date'] }}</div>
 </div>
 <table style="width: 100%" class="pb-2">
     <thead>
@@ -68,11 +69,19 @@
     </thead>
     <tbody>
     <tr class="text-10">
-        <td>ANGELINE MANABAT, 13014-102 STREET NW, EDMONTON, AB T5E 4J5</td>
+        <td>{{ $employee->name }}, {{ $employee->address }}</td>
         <td></td>
     </tr>
     </tbody>
 </table>
+@php
+$total_hourly = $paystub->hourly_qty * $paystub->hourly_rate;
+$total_stat = $paystub->stat_qty * $paystub->stat_rate;
+$total_overtime = $paystub->overtime_qty * $paystub->overtime_rate;
+
+$total_income = $total_hourly + $total_stat + $total_overtime + $paystub->vac_pay;
+$total_deductions = $paystub->cpp + $paystub->ei + $paystub->federal_tax;
+@endphp
 <table cellspacing="0" width="50%">
     <thead>
     <tr class="text-10">
@@ -86,38 +95,42 @@
     <tbody>
         <tr class="text-10">
             <td class="text-left">hourly</td>
-            <td class="text-left">61:53</td>
-            <td class="text-left">16.00</td>
-            <td class="text-left">990.13</td>
-            <td class="text-left">17,827.72</td>
+            <td class="text-left">{{ convertTime($paystub->hourly_qty) }}</td>
+            <td class="text-left">{{ number_format($paystub->hourly_rate, 2) }}</td>
+            <td class="text-left">{{ number_format(round($total_hourly, 2), 2) }}</td>
+            <td class="text-left">TBD</td>
         </tr>
         <tr class="text-10">
             <td class="text-left">STAT PAY</td>
-            <td class="text-left">6:27</td>
-            <td class="text-left">24.00</td>
-            <td class="text-left">154.80</td>
-            <td class="text-left">407.20</td>
+            <td class="text-left">{{ convertTime(number_format($paystub->stat_qty, 2)) }}</td>
+            <td class="text-left">{{ number_format($paystub->stat_rate, 2) }}</td>
+            <td class="text-left">{{ number_format(round($total_stat, 2), 2) }}</td>
+            <td class="text-left">TBD</td>
         </tr>
         <tr class="text-10">
             <td class="text-left">VacPay-Paid Out</td>
             <td class="text-left"></td>
             <td class="text-left"></td>
-            <td class="text-left">39.61</td>
-            <td class="text-left">717.32</td>
+            <td class="text-left">{{ number_format($paystub->vac_pay, 2) }}</td>
+            <td class="text-left">TBD</td>
         </tr>
         <tr class="text-10">
             <td class="text-left">Overtime</td>
-            <td class="text-left"></td>
-            <td class="text-left"></td>
-            <td class="text-left"></td>
-            <td class="text-left">105.00</td>
+            <td class="text-left">{{ convertTime(number_format($paystub->overtime_qty, 2)) }}</td>
+            <td class="text-left">{{ number_format($paystub->overtime_rate, 2) }}</td>
+            <td class="text-left">{{ number_format(round($total_overtime, 2), 2) }}</td>
+            <td class="text-left">TBD</td>
         </tr>
         <tr class="text-10">
-            <td></td>
-            <td class="text-left border-top-solid">69:20</td>
+            <td></td> <!-- TOTAL Calculations -->
+            <td class="text-left border-top-solid">
+                {{ convertTime(number_format($paystub->hourly_qty + $paystub->stat_qty + $paystub->overtime_qty, 2)) }}
+            </td>
             <td class="text-left border-top-solid"></td>
-            <td class="text-left border-top-solid">1,287.29</td>
-            <td class="text-left border-top-solid">19,726.61</td>
+            <td class="text-left border-top-solid">
+                {{number_format(round( $total_income , 2), 2) }}
+            </td>
+            <td class="text-left border-top-solid">TBD</td>
         </tr>
         <tr><td style="height: 20px" colspan="5"></td></tr>
     </tbody>
@@ -133,124 +146,66 @@
             <td class="text-left">CPP - Employee</td>
             <td class="text-left"></td>
             <td class="text-left"></td>
-            <td class="text-left">-56.50</td>
-            <td class="text-left">-839.32</td>
+            <td class="text-left">- {{ number_format($paystub->cpp, 2) }}</td>
+            <td class="text-left">TBD</td>
         </tr>
         <tr class="text-10">
             <td class="text-left">EI - Employee</td>
             <td class="text-left"></td>
             <td class="text-left"></td>
-            <td class="text-left">-21.37</td>
-            <td class="text-left">-327.45</td>
+            <td class="text-left">- {{ number_format($paystub->ei, 2) }}</td>
+            <td class="text-left">TBD</td>
         </tr>
         <tr class="text-10">
             <td class="text-left">Federal Income Tax</td>
             <td class="text-left"></td>
             <td class="text-left"></td>
-            <td class="text-left">-142.27</td>
-            <td class="text-left">-1,684.77</td>
+            <td class="text-left">- {{ number_format($paystub->federal_tax, 2) }}</td>
+            <td class="text-left">TBD</td>
         </tr>
-        <tr class="text-10">
+        <tr class="text-10"> <!-- TOTAL -->
             <td class="text-left"></td>
             <td class="text-left"></td>
             <td class="text-left"></td>
-            <td class="text-left border-top-solid">-220.14</td>
-            <td class="text-left border-top-solid">-2,851.54</td>
+            <td class="text-left border-top-solid">- {{ number_format(round($total_deductions, 2), 2) }}</td>
+            <td class="text-left border-top-solid">TBD</td>
         </tr>
         <tr><td style="height: 20px" colspan="5"></td></tr>
         <tr class="text-10">
             <td class="text-left text-bold">Net Pay</td>
             <td class="text-left"></td>
             <td class="text-left"></td>
-            <td class="text-left text-bold">958.23</td>
-            <td class="text-left text-bold">17,833.30</td>
+            <td class="text-left text-bold">{{ number_format( round( $total_income - $total_deductions , 2) , 2) }}</td>
+            <td class="text-left text-bold">TBD</td>
         </tr>
     </tbody>
 
 </table>
-<!--
-<div class="pt-1 pb-1 display-flex">
-    <div class="width-50 text-10 display-flex">
-        <div class="solid-bottom-border width-50 text-bold">Withholdings</div>
-        <div class="solid-bottom-border width-50 text-bold display-flex pb-1 pl-1">
-            <div class="width-25">Qty</div>
-            <div class="width-25">Rate</div>
-            <div class="width-25">Current</div>
-            <div class="width-25">YTD Amount</div>
-        </div>
-    </div>
-    <div class="width-50 text-10"></div>
-</div>
-<div class="pb-1 display-flex">
-    <div class="width-50 text-10 display-flex">
-        <div class="width-50">hourly</div>
-        <div class="width-50 text-bold display-flex pb-1 pl-1">
-            <div class="width-25">61:53</div>
-            <div class="width-25">16.00 </div>
-            <div class="width-25">990.13 </div>
-            <div class="width-25">17,827.72</div>
-        </div>
-    </div>
-    <div class="width-50 text-10"></div>
-</div>
-<div class="pb-1 display-flex">
-    <div class="width-50 text-10 display-flex">
-        <div class="width-50">STAT PAY</div>
-        <div class="width-50 text-bold display-flex pb-1 pl-1">
-            <div class="width-25">6:27</div>
-            <div class="width-25">24.00</div>
-            <div class="width-25">154.80</div>
-            <div class="width-25"> 407.20</div>
-        </div>
-    </div>
-    <div class="width-50 text-10"></div>
-</div>
-<div class="pb-1 display-flex">
-    <div class="width-50 text-10 display-flex">
-        <div class="width-50">VacPay-Paid Out</div>
-        <div class="width-50 text-bold display-flex pb-1 pl-1">
-            <div class="width-25"></div>
-            <div class="width-25"></div>
-            <div class="width-25">39.61</div>
-            <div class="width-25">717.32</div>
-        </div>
-    </div>
-    <div class="width-50 text-10"></div>
-</div>
-<div class="pb-1 display-flex">
-    <div class="width-50 text-10 display-flex">
-        <div class="width-50">Overtime</div>
-        <div class="width-50 text-bold display-flex pb-1 pl-1">
-            <div class="width-25"></div>
-            <div class="width-25"></div>
-            <div class="width-25"></div>
-            <div class="width-25">105.00</div>
-        </div>
-    </div>
-    <div class="width-50 text-10"></div>
-</div>
-<div class="pb-1 display-flex">
-    <div class="width-50 text-10 display-flex">
-        <div class="width-50"></div>
-        <div class="width-50 text-bold display-flex pb-1 border-top-solid pl-1">
-            <div class="width-25">69:20</div>
-            <div class="width-25"> </div>
-            <div class="width-25">1,287.29 </div>
-            <div class="width-25">19,726.61</div>
-        </div>
-    </div>
-    <div class="width-50 text-10"></div>
-</div>
--->
+<footer>
+    <p class="p-5 text-10" style="position: absolute;bottom: 1%">
+        {{ $employer->name }}, {{ $employer->address }}
+    </p>
+</footer>
 </body>
 </html>
 
-{{--<?php--}}
-{{--//    foreach ($employees as $employee){--}}
-{{--//        echo $employee->id;--}}
-{{--//        echo $employee->name;--}}
-{{--//    }--}}
-{{--  echo '<br />'. $data['pay_date'] .'<br />';--}}
-{{--//echo $pay_date;--}}
-{{--?>--}}
-{{--test2--}}
+<?php
+function convertTime($dec){
+    // start by converting to seconds
+    $seconds = ($dec * 3600);
+    // we're given hours, so let's get those the easy way
+    $hours = floor($dec);
+    // since we've "calculated" hours, let's remove them from the seconds variable
+    $seconds -= $hours * 3600;
+    // calculate minutes left
+    $minutes = floor($seconds / 60);
+    // remove those from seconds as well
+    $seconds -= $minutes * 60;
+    // return the time formatted HH:MM:SS
+    //return lz($hours).":".lz($minutes).":".lz($seconds);
+    return lz($hours).":".lz($minutes);
+}
+
+// lz = leading zero
+function lz($num){return (strlen($num) < 2) ? "0{$num}" : $num;}
+?>

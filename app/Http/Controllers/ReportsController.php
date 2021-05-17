@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Employee;
 use App\Models\Hour;
 use App\Models\Paystub;
+use App\Models\User;
 use PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -87,8 +88,8 @@ class ReportsController extends Controller
         // do calculations
         $hourly = round($total_hours * $employee_rate, 2);
         $vac_pay = round($hourly * 0.04, 2);
-        $stat_pay = $total_stat_hours * ($employee_rate * 1.5); //TODO::::: get it from settings
-        $overtime_pay = $total_overtime_hours * ($employee_rate * 2); // TODO::::::: get from settings
+        $stat_pay = round($total_stat_hours * ($employee_rate * 1.5), 2); //TODO::::: get it from settings
+        $overtime_pay = round($total_overtime_hours * ($employee_rate * 2), 2); // TODO::::::: get from settings
 
         // split pay date
         $payment_date = explode('-', $pay_date, 3);
@@ -116,10 +117,10 @@ class ReportsController extends Controller
         $paystub->hourly_qty = $total_hours;
         $paystub->hourly_rate = $employee_rate;
         $paystub->stat_qty = $total_stat_hours;
-        $paystub->stat_rate = '1.5';  // TODO::::::::::: get from settings
+        $paystub->stat_rate = $employee->rate * 1.5;  // TODO::::::::::: get from settings
         $paystub->vac_pay = $vac_pay;
         $paystub->overtime_qty = $total_overtime_hours;
-        $paystub->overtime_rate = '2.0'; //TODO::::: get from settings
+        $paystub->overtime_rate = $employee->rate * 2.0; //TODO::::: get from settings
         $paystub->cpp = $employer_cpp;
         $paystub->ei = $employee_ei;
         $paystub->federal_tax = $federal_tax;
@@ -157,12 +158,20 @@ class ReportsController extends Controller
         $data['pay_date'] = $request->pay_date;
         $data['frequency'] = $request->frequency;
         // retreive all records from db
-//        $employee = Employee::all();
+        $employee = Employee::find($data['employee_id']);
+        $employer = Auth::user();
+        $paystub = Paystub::where([
+            ['employee_id', '=', $data['employee_id']],
+            ['paid_date', '=', $data['pay_date']],
+            ['employer_id', '=', Auth::id()]
+        ])->first();
 
 
         // share data to view
         view()->share('data',$data);
-        view()->share('pay_date', $request->pay_date);
+        view()->share('employee',$employee);
+        view()->share('employer',$employer);
+        view()->share('paystub',$paystub);
         $pdf = PDF::loadView('dashboard.reports.paystub_pdf', $data);
 
         // download PDF file with download method
