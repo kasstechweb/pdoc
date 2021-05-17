@@ -6,6 +6,7 @@ use App\Models\Employee;
 use App\Models\Hour;
 use App\Models\Paystub;
 use App\Models\User;
+use DateTime;
 use PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -157,21 +158,47 @@ class ReportsController extends Controller
         $data['start_date'] = $request->first_date;
         $data['pay_date'] = $request->pay_date;
         $data['frequency'] = $request->frequency;
-        // retreive all records from db
+        // retrieve all records from db
         $employee = Employee::find($data['employee_id']);
         $employer = Auth::user();
+        // get this paystub
         $paystub = Paystub::where([
             ['employee_id', '=', $data['employee_id']],
             ['paid_date', '=', $data['pay_date']],
             ['employer_id', '=', Auth::id()]
         ])->first();
 
+        //get first day of this year
+        $date = DateTime::createFromFormat("Y-m-d", $data['pay_date']);
+        $year = $date->format('Y');
+        $new_date = $year . '-01-01';
 
+        // get year to date data
+        $ytds = Paystub::where([
+            ['employee_id', '=', $data['employee_id']],
+            ['employer_id', '=', Auth::id()]
+        ])->whereBetween('paid_date', [$new_date, $data['pay_date']])->get();
+
+        // do the calculations
+        $ytd['hourly'] = 0; $ytd['stat'] = 0; $ytd['vac'] = 0; $ytd['overtime'] = 0;
+        $ytd['cpp'] = 0; $ytd['ei'] = 0; $ytd['ftax'] = 0;
+        foreach ($ytds as $stub){
+            $ytd['hourly']      += $stub->hourly_qty * $stub->hourly_rate;
+            $ytd['stat']        += $stub->stat_qty * $stub->stat_rate;
+            $ytd['vac']         += $stub->vac_pay ;
+            $ytd['overtime']    += $stub->overtime_qty * $stub->overtime_rate;
+            $ytd['cpp']         += $stub->cpp;
+            $ytd['ei']          += $stub->ei;
+            $ytd['ftax']        += $stub->federal_tax;
+        }
+
+//        dd($ytd);
         // share data to view
         view()->share('data',$data);
         view()->share('employee',$employee);
         view()->share('employer',$employer);
         view()->share('paystub',$paystub);
+        view()->share('ytd',$ytd);
         $pdf = PDF::loadView('dashboard.reports.paystub_pdf', $data);
 
         // download PDF file with download method

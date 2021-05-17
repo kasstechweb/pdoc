@@ -81,6 +81,10 @@ $total_overtime = $paystub->overtime_qty * $paystub->overtime_rate;
 
 $total_income = $total_hourly + $total_stat + $total_overtime + $paystub->vac_pay;
 $total_deductions = $paystub->cpp + $paystub->ei + $paystub->federal_tax;
+
+$total_ytd_income = $ytd['hourly'] + $ytd['stat'] + $ytd['vac'] + $ytd['overtime'];
+$total_ytd_deductions = $ytd['cpp'] + $ytd['ei'] + $ytd['ftax'];
+
 @endphp
 <table cellspacing="0" width="50%">
     <thead>
@@ -98,28 +102,28 @@ $total_deductions = $paystub->cpp + $paystub->ei + $paystub->federal_tax;
             <td class="text-left">{{ convertTime($paystub->hourly_qty) }}</td>
             <td class="text-left">{{ number_format($paystub->hourly_rate, 2) }}</td>
             <td class="text-left">{{ number_format(round($total_hourly, 2), 2) }}</td>
-            <td class="text-left">TBD</td>
+            <td class="text-left">{{ number_format(round( $ytd['hourly'],2), 2) }}</td>
         </tr>
         <tr class="text-10">
             <td class="text-left">STAT PAY</td>
             <td class="text-left">{{ convertTime(number_format($paystub->stat_qty, 2)) }}</td>
             <td class="text-left">{{ number_format($paystub->stat_rate, 2) }}</td>
             <td class="text-left">{{ number_format(round($total_stat, 2), 2) }}</td>
-            <td class="text-left">TBD</td>
+            <td class="text-left">{{ number_format(round( $ytd['stat'],2), 2) }}</td>
         </tr>
         <tr class="text-10">
             <td class="text-left">VacPay-Paid Out</td>
             <td class="text-left"></td>
             <td class="text-left"></td>
             <td class="text-left">{{ number_format($paystub->vac_pay, 2) }}</td>
-            <td class="text-left">TBD</td>
+            <td class="text-left">{{ number_format(round( $ytd['vac'],2), 2) }}</td>
         </tr>
         <tr class="text-10">
             <td class="text-left">Overtime</td>
             <td class="text-left">{{ convertTime(number_format($paystub->overtime_qty, 2)) }}</td>
             <td class="text-left">{{ number_format($paystub->overtime_rate, 2) }}</td>
             <td class="text-left">{{ number_format(round($total_overtime, 2), 2) }}</td>
-            <td class="text-left">TBD</td>
+            <td class="text-left">{{ number_format(round( $ytd['overtime'],2), 2) }}</td>
         </tr>
         <tr class="text-10">
             <td></td> <!-- TOTAL Calculations -->
@@ -127,10 +131,8 @@ $total_deductions = $paystub->cpp + $paystub->ei + $paystub->federal_tax;
                 {{ convertTime(number_format($paystub->hourly_qty + $paystub->stat_qty + $paystub->overtime_qty, 2)) }}
             </td>
             <td class="text-left border-top-solid"></td>
-            <td class="text-left border-top-solid">
-                {{number_format(round( $total_income , 2), 2) }}
-            </td>
-            <td class="text-left border-top-solid">TBD</td>
+            <td class="text-left border-top-solid">{{number_format(round( $total_income , 2), 2) }}</td>
+            <td class="text-left border-top-solid">{{ number_format(round( $total_ytd_income ,2), 2) }}</td>
         </tr>
         <tr><td style="height: 20px" colspan="5"></td></tr>
     </tbody>
@@ -147,28 +149,28 @@ $total_deductions = $paystub->cpp + $paystub->ei + $paystub->federal_tax;
             <td class="text-left"></td>
             <td class="text-left"></td>
             <td class="text-left">- {{ number_format($paystub->cpp, 2) }}</td>
-            <td class="text-left">TBD</td>
+            <td class="text-left">{{ number_format(round( $ytd['cpp'] ,2), 2) }}</td>
         </tr>
         <tr class="text-10">
             <td class="text-left">EI - Employee</td>
             <td class="text-left"></td>
             <td class="text-left"></td>
             <td class="text-left">- {{ number_format($paystub->ei, 2) }}</td>
-            <td class="text-left">TBD</td>
+            <td class="text-left">{{ number_format(round( $ytd['ei'] ,2), 2) }}</td>
         </tr>
         <tr class="text-10">
             <td class="text-left">Federal Income Tax</td>
             <td class="text-left"></td>
             <td class="text-left"></td>
             <td class="text-left">- {{ number_format($paystub->federal_tax, 2) }}</td>
-            <td class="text-left">TBD</td>
+            <td class="text-left">{{ number_format(round( $ytd['ftax'] ,2), 2) }}</td>
         </tr>
         <tr class="text-10"> <!-- TOTAL -->
             <td class="text-left"></td>
             <td class="text-left"></td>
             <td class="text-left"></td>
             <td class="text-left border-top-solid">- {{ number_format(round($total_deductions, 2), 2) }}</td>
-            <td class="text-left border-top-solid">TBD</td>
+            <td class="text-left border-top-solid">- {{ number_format(round($total_ytd_deductions, 2), 2) }}</td>
         </tr>
         <tr><td style="height: 20px" colspan="5"></td></tr>
         <tr class="text-10">
@@ -176,7 +178,7 @@ $total_deductions = $paystub->cpp + $paystub->ei + $paystub->federal_tax;
             <td class="text-left"></td>
             <td class="text-left"></td>
             <td class="text-left text-bold">{{ number_format( round( $total_income - $total_deductions , 2) , 2) }}</td>
-            <td class="text-left text-bold">TBD</td>
+            <td class="text-left text-bold">{{ number_format( round( $total_ytd_income - $total_ytd_deductions , 2) , 2) }}</td>
         </tr>
     </tbody>
 
