@@ -187,11 +187,23 @@ class ReportsController extends Controller
         $paystub->overtime_rate = $employee_rate * $settings->overtime_amount;
         if ($settings->max_cpp >= ($ytd['cpp'] + $employee_cpp)) {
             $paystub->cpp = $employee_cpp;
+        }elseif ($settings->max_cpp >= ($ytd['cpp']) && $ytd['cpp'] != $settings->max_cpp){
+            if (($ytd['cpp'] + $employee_cpp) > $settings->max_cpp) {
+                $paystub->cpp = $settings->max_cpp - $ytd['cpp'];
+            }else {
+                $paystub->cpp = $employee_cpp;
+            }
         }else {
             $paystub->cpp = 0;
         }
         if ($settings->max_ei >= ($ytd['ei'] + $employee_ei)) {
             $paystub->ei = $employee_ei;
+        }elseif ($settings->max_ei >= ($ytd['ei']) && $ytd['ei'] != $settings->max_ei){
+            if (($ytd['ei'] + $employee_ei) > $settings->max_ei) {
+                $paystub->ei = $settings->max_ei - $ytd['ei'];
+            }else {
+                $paystub->ei = $employee_ei;
+            }
         }else {
             $paystub->ei = 0;
         }

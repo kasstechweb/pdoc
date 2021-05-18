@@ -71,22 +71,18 @@
                         </div>
                     </div>
 
-                    <div class="form-row d-flex justify-content-center">
+                    <div class="form-row">
                         <div class="col-md-4">
-                            <a onclick="payPeriod()" class="btn btn-success">calculate pay period</a>
+                            <a onclick="payPeriod()" class="btn btn-success btn-block">Show pay period</a>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <input class="form-control py-4" id="pay_period" type="text" aria-describedby="emailHelp" name="pay_period" value="pay period from: to" disabled/>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label class="small mb-1" for="pay_period">Pay Period</label>
-                        <input class="form-control py-4" id="pay_period" type="text" aria-describedby="emailHelp" name="pay_period" value="..." disabled/>
 
-                        @error('address')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
-                    </div>
 
                     <div class="form-group mt-4 mb-0">
                         <button type="submit" class="btn btn-primary btn-block">
