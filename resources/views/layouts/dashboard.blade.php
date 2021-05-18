@@ -94,6 +94,11 @@
                                 paystubs
                             </a>
 
+                            <a class="nav-link @if(Route::current()->getName() == 'settings') active @endif" href="{{route('settings')}}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-cog"></i></div>
+                                Settings
+                            </a>
+
                             <div class="sb-sidenav-menu-heading">Account</div>
                             <a class="nav-link @if(Route::current()->getName() == 'profile') active @endif" href="{{route('profile')}}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-user-alt"></i></div>

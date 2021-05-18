@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Employee;
 use App\Models\Hour;
 use App\Models\Paystub;
+use App\Models\Setting;
 use App\Models\User;
 use DateTime;
+use Illuminate\Support\Facades\Validator;
 use PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,6 +21,42 @@ class ReportsController extends Controller
         $this->middleware('auth');
     }
 
+    public function settings(Request $request) {
+        if ($request->method() == 'POST') {
+            $messages = [
+                'stat.required' => 'The stat holiday Number is required.',
+            ];
+
+            $validator = Validator::make($request->all(), [
+                'stat' => 'required|numeric|between:0,99.99',
+                'overtime' => 'required|numeric|between:0,99.99',
+                'max_cpp' => 'required|numeric|between:0,999.99',
+                'max_ei' => 'required|numeric|between:0,999.99',
+            ], $messages);
+
+            if ($validator->fails()) {
+                return redirect(route('settings'))
+                    ->withErrors($validator)
+                    ->withInput();
+            }else { // pass validation
+                $setting = Setting::find(1);
+                $setting->stat_amount = $request->input('stat');
+                $setting->overtime_amount = $request->input('overtime');
+                $setting->max_cpp = $request->input('max_cpp');
+                $setting->max_ei = $request->input('max_ei');
+                $setting->save();
+
+                $settings = Setting::where('id', 1)->first();
+                return redirect(route('settings'))
+                    ->with('msg', 'settings update Success!')
+                    ->with('settings', $settings);
+            }
+        }else {
+            $settings = Setting::where('id', 1)->first();
+            return view('dashboard.reports.settings')
+                ->with('settings', $settings);
+        }
+    }
     public function paystubsForm(Request $request){
         $frequencies = DB::table('frequency')->get();
         if ($request->method() == 'POST') {
@@ -43,15 +81,6 @@ class ReportsController extends Controller
                 ->with('freq', null);
         }
     }
-//    public function payStubsView(){
-//        $employees = Employee::all();
-//        return view('dashboard.reports.paystubs')
-//            ->with('employees', $employees);
-//    }
-//
-//    public function payStubsShowEmployees() {
-//
-//    }
 
     public function pdocAjax(Request $request){
         $employer_name = Auth::user()->name;
@@ -86,11 +115,14 @@ class ReportsController extends Controller
             }
         }
 
+        // get from settings
+        $settings = Setting::where('id', 1)->first();
+//        dd($settings->stat_amount);
         // do calculations
         $hourly = round($total_hours * $employee_rate, 2);
         $vac_pay = round($hourly * 0.04, 2);
-        $stat_pay = round($total_stat_hours * ($employee_rate * 1.5), 2); //TODO::::: get it from settings
-        $overtime_pay = round($total_overtime_hours * ($employee_rate * 2), 2); // TODO::::::: get from settings
+        $stat_pay = round($total_stat_hours * ($employee_rate * $settings->stat_amount), 2); //TODO::::: get it from settings
+        $overtime_pay = round($total_overtime_hours * ($employee_rate * $settings->overtime_amount), 2); // TODO::::::: get from settings
 
         // split pay date
         $payment_date = explode('-', $pay_date, 3);
@@ -108,7 +140,36 @@ class ReportsController extends Controller
         $employer_cpp = $pdoc_result['values2']['values']['employerCPP'];
         $employer_ei = $pdoc_result['values2']['values']['employerEI'];
 //
-        $net_pay = ($hourly + $vac_pay + $stat_pay + $overtime_pay ) - ($employee_cpp + $employee_ei + $federal_tax);
+        // get year to date data
+        $date = DateTime::createFromFormat("Y-m-d", $pay_date);
+        $year = $date->format('Y');
+        $new_date = $year . '-01-01';
+        $ytds = Paystub::where([
+            ['employee_id', '=', $employee_id],
+            ['employer_id', '=', Auth::id()]
+        ])->whereBetween('paid_date', [$new_date, $pay_date])->get();
+
+        // do the calculations
+        $ytd['hourly'] = 0; $ytd['stat'] = 0; $ytd['vac'] = 0; $ytd['overtime'] = 0;
+        $ytd['cpp'] = 0; $ytd['ei'] = 0; $ytd['ftax'] = 0;
+        foreach ($ytds as $stub){
+            $ytd['hourly']      += $stub->hourly_qty * $stub->hourly_rate;
+            $ytd['stat']        += $stub->stat_qty * $stub->stat_rate;
+            $ytd['vac']         += $stub->vac_pay ;
+            $ytd['overtime']    += $stub->overtime_qty * $stub->overtime_rate;
+            $ytd['cpp']         += $stub->cpp;
+            $ytd['ei']          += $stub->ei;
+            $ytd['ftax']        += $stub->federal_tax;
+        }
+
+        $total_income = $hourly + $vac_pay + $stat_pay + $overtime_pay;
+        $net_pay = $total_income;
+        if ($settings->max_cpp >= ($ytd['cpp']+ $employee_cpp)) {
+            $net_pay -= $employee_cpp;
+        }else if ($settings->max_ei >= ($ytd['ei'] + $employee_ei)) {
+            $net_pay -= $employee_ei;
+        }
+        $net_pay -= $federal_tax;
         //        dd($total_hourly);
         //        $hourly = hours
 
@@ -120,12 +181,21 @@ class ReportsController extends Controller
         $paystub->hourly_qty = $total_hours;
         $paystub->hourly_rate = $employee_rate;
         $paystub->stat_qty = $total_stat_hours;
-        $paystub->stat_rate = $employee->rate * 1.5;  // TODO::::::::::: get from settings
+        $paystub->stat_rate = $employee_rate * $settings->stat_amount;
         $paystub->vac_pay = $vac_pay;
         $paystub->overtime_qty = $total_overtime_hours;
-        $paystub->overtime_rate = $employee->rate * 2.0; //TODO::::: get from settings
-        $paystub->cpp = $employer_cpp;
-        $paystub->ei = $employee_ei;
+        $paystub->overtime_rate = $employee_rate * $settings->overtime_amount;
+        if ($settings->max_cpp >= ($ytd['cpp'] + $employee_cpp)) {
+            $paystub->cpp = $employee_cpp;
+        }else {
+            $paystub->cpp = 0;
+        }
+        if ($settings->max_ei >= ($ytd['ei'] + $employee_ei)) {
+            $paystub->ei = $employee_ei;
+        }else {
+            $paystub->ei = 0;
+        }
+
         $paystub->federal_tax = $federal_tax;
         $paystub->net_pay = $net_pay;
         $paystub->pay_frequency = $frequency;
@@ -211,9 +281,39 @@ class ReportsController extends Controller
     }
 
     public function testtttt(){
-        return view('dashboard.reports.paystub_pdf');
+        // getting employee details
+        $employee = Employee::find($employee_id);
+        $employee_rate = $employee->pay_rate;
+        $employee_name = $employee->name;
+
+        //  getting employee work hours
+        $hours = Hour::where('employee_id', $employee_id)->whereBetween('work_date', [$start_date, $pay_date])->get();
+        $total_hours = 0;$total_stat_hours = 0;$total_overtime_hours = 0;
+
+        foreach ($hours as $hour){
+            if ($hour->is_state_holiday == 1){
+                $total_stat_hours += $hour->work_hours;
+            }elseif ($hour->is_over_time == 1){
+                $total_overtime_hours += $hour->work_hours;
+            }else {
+                $total_hours += $hour->work_hours;
+            }
+        }
+
+        // get from settings
+        $settings = Setting::where('id', 1)->first();
+//        dd($settings->stat_amount);
+        // do calculations
+        $hourly = round($total_hours * $employee_rate, 2);
+        $vac_pay = round($hourly * 0.04, 2);
+        $stat_pay = round($total_stat_hours * ($employee_rate * $settings->stat_amount), 2); //TODO::::: get it from settings
+        $overtime_pay = round($total_overtime_hours * ($employee_rate * $settings->overtime_amount), 2); // TODO::::::: get from settings
+
+
+
+        dd($stat_pay);
     }
-//
+
     public function pdoc($hourly, $vac_pay, $year, $month, $day, $employee_name, $employer_name, $province, $frequency){
         include(app_path() . '\pdoc\simple_html_dom.php');
         error_reporting(E_ALL); ini_set('display_errors', 1);
