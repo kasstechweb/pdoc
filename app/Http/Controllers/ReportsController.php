@@ -205,8 +205,8 @@ class ReportsController extends Controller
         $pdf = PDF::loadView('dashboard.reports.paystub_pdf', $data);
 
         // download PDF file with download method
-
-        return $pdf->download('pdf_file.pdf');
+        $file_name = $employee->name. '_'. $data['pay_date']. '.pdf';
+        return $pdf->download($file_name);
 
     }
 

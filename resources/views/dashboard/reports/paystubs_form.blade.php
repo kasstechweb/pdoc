@@ -214,9 +214,40 @@
                 var freq = document.getElementById('frequency').value;
                 var pay_date = document.getElementById('payment_date').value;
 
+                // calculate number of days based on frequency
+                var days_num = 0;
+                switch (freq) {
+                    case 'DAILY':
+                        days_num = 1;
+                        break;
+                    case 'WEEKLY_52PP':
+                        days_num = 7;
+                        break;
+                    case 'BI_WEEKLY':
+                        days_num = 14;
+                        break;
+                    case 'SEMI_MONTHLY':
+                        days_num = 15;
+                        break;
+                    case 'MONTHLY_12PP':
+                        days_num = 30;
+                        break;
+                    case 'WEEKLY_53PP':
+                        days_num = 7;
+                        break;
+                    case 'BI_WEEKLY_27PP':
+                        days_num = 14;
+                        break;
+                    default:
+                        days_num = 0;
+                }
+                // console.log('days_num ', days_num);
+                // console.log('freq ', freq);
+
                 var first_date = new Date(pay_date);
-                first_date.setDate((first_date.getDate() - 15) + 1);
+                first_date.setDate((first_date.getDate() - days_num) + 1);
                 first_date = first_date.toLocaleDateString("en-CA");
+                // console.log('start date ', first_date);
 
                 btn_text.style.display = 'none';
                 spinner.style.display = 'block';
@@ -239,6 +270,12 @@
                             }
                             //data.pdoc_result.status
                             console.log(data)
+                        },
+                        error: function () {
+                            console.log('error');
+                            showErrorMessage('Error in remote calculator, please try again!');
+                            btn_text.style.display = 'block';
+                            spinner.style.display = 'none';
                         }
                     });
                 });
@@ -249,8 +286,36 @@
                 get_request += '&frequency=' + frequency;
                 get_request += '&pay_date=' + pay_date;
 
+                // calculate number of days based on frequency
+                var days_num = 0;
+                switch (frequency) {
+                    case 'DAILY':
+                        days_num = 1;
+                        break;
+                    case 'WEEKLY_52PP':
+                        days_num = 7;
+                        break;
+                    case 'BI_WEEKLY':
+                        days_num = 14;
+                        break;
+                    case 'SEMI_MONTHLY':
+                        days_num = 15;
+                        break;
+                    case 'MONTHLY_12PP':
+                        days_num = 30;
+                        break;
+                    case 'WEEKLY_53PP':
+                        days_num = 7;
+                        break;
+                    case 'BI_WEEKLY_27PP':
+                        days_num = 14;
+                        break;
+                    default:
+                        days_num = 0;
+                }
+
                 var first_date = new Date(pay_date);
-                first_date.setDate((first_date.getDate() - 15) + 1);
+                first_date.setDate((first_date.getDate() - days_num) + 1);
                 first_date = first_date.toLocaleDateString("en-CA");
 
                 get_request += '&first_date=' + first_date;
