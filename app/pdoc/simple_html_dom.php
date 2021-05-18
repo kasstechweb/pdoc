@@ -42,7 +42,7 @@ define('HDOM_INFO_ENDSPACE', 7);
 defined('DEFAULT_TARGET_CHARSET') || define('DEFAULT_TARGET_CHARSET', 'UTF-8');
 defined('DEFAULT_BR_TEXT') || define('DEFAULT_BR_TEXT', "\r\n");
 defined('DEFAULT_SPAN_TEXT') || define('DEFAULT_SPAN_TEXT', ' ');
-defined('MAX_FILE_SIZE') || define('MAX_FILE_SIZE', 600000);
+defined('MAX_FILE_SIZE') || define('MAX_FILE_SIZE', 100000000000);
 define('HDOM_SMARTY_AS_TEXT', 1);
 
 function file_get_html(
@@ -1208,9 +1208,9 @@ class simple_html_dom_node
 				}
 			}
 		} else {
-			if (is_object($debug_object)) {
-				$debug_object->debug_log(2, 'Invalid type: ', gettype($class));
-			}
+//			if (is_object($debug_object)) {
+//				$debug_object->debug_log(2, 'Invalid type: ', gettype($class));
+//			}
 		}
 	}
 
@@ -1221,9 +1221,9 @@ class simple_html_dom_node
 				return in_array($class, explode(' ', $this->class), true);
 			}
 		} else {
-			if (is_object($debug_object)) {
-				$debug_object->debug_log(2, 'Invalid type: ', gettype($class));
-			}
+//			if (is_object($debug_object)) {
+//				$debug_object->debug_log(2, 'Invalid type: ', gettype($class));
+//			}
 		}
 
 		return false;

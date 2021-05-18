@@ -20,6 +20,9 @@
 @endsection
 
 @section('content')
+    @php
+        $employee_list = array();
+    @endphp
     <div class="container-fluid">
         <h1 class="mt-4"></h1>
         <ol class="breadcrumb mb-4">
@@ -125,29 +128,43 @@
                                 {{--                            <td>{{ $employee->termination_date }}</td>--}}
                                 <td>{{ $employee->sin }}</td>
                                 <td class="m-auto">
-                                @foreach($paystubs as $paystub)
-                                    @if($paystub->employee_id == $employee->id)
-                                        <a onclick="paystub_pdf({{$employee->id}}, '{{$freq}}', '{{$payment_date}}')" class="btn btn-success" id="btn_text_download-{{ $employee->id }}" href="javascript:void(0);">
-                                            <span>
-                                                 <i class="fas fa-download"></i>
-                                                Download Paystub
-                                            </span>
-                                        </a>
-                                    @else
-                                            <a id="download_link" onclick="pdoc_ajax({{ $employee->id }});" class="btn btn-success" href="javascript:void(0);">
-                                                <div class="d-flex justify-content-center">
-                                                    <div id="spinner-{{ $employee->id }}" class="spinner-border" style="display: none;" role="status">
-                                                        <span class="sr-only">Loading...</span>
-                                                    </div>
+                                    @if(count($paystubs) > 0)
+                                        @foreach($paystubs as $paystub)
+                                            @if($paystub->employee_id == $employee->id)
+                                                @if(!in_array($employee->id, $employee_list))
+                                                    @php
+                                                        array_push($employee_list, $employee->id);
+                                                    @endphp
+                                                    <a onclick="paystub_pdf({{$employee->id}}, '{{$freq}}', '{{$payment_date}}')" class="btn btn-success btn-block" id="btn_text_download-{{ $employee->id }}" href="javascript:void(0);">
+                                                    <span>
+                                                         <i class="fas fa-download"></i>
+                                                        Download Paystub
+                                                    </span>
+                                                    </a>
+                                                @endif
+                                            @endif
+                                        @endforeach
+                                    @endif
+{{--                                    @else--}}
+                                    @if(!in_array($employee->id, $employee_list))
+                                        <a id="download_link-{{ $employee->id }}" onclick="pdoc_ajax({{ $employee->id }});" class="btn btn-success btn-block" href="javascript:void(0);">
+                                            <div class="d-flex justify-content-center">
+                                                <div id="spinner-{{ $employee->id }}" class="spinner-border" style="display: none;" role="status">
+                                                    <span class="sr-only">Loading...</span>
                                                 </div>
-                                                <span id="btn_text-{{ $employee->id }}">
+                                            </div>
+                                            <span id="btn_text-{{ $employee->id }}">
                                                      <i class="fas fa-file-invoice-dollar"></i>
                                                     Calculate Paystub
                                                 </span>
+                                        </a>
+                                            <a onclick="paystub_pdf({{$employee->id}}, '{{$freq}}', '{{$payment_date}}')" class="btn btn-success btn-block" style="display: none" id="btn_text_download-{{ $employee->id }}" href="javascript:void(0);">
+                                                    <span>
+                                                         <i class="fas fa-download"></i>
+                                                        Download Paystub
+                                                    </span>
                                             </a>
                                     @endif
-                                @endforeach
-
                                 </td>
                                 </tr>
                             @endforeach
@@ -192,6 +209,7 @@
                 var spinner = document.getElementById('spinner-'+employee_id);
                 var btn_text = document.getElementById('btn_text-'+employee_id);
                 var btn_text_download = document.getElementById('btn_text_download-'+employee_id);
+                var download_link = document.getElementById('download_link-'+employee_id);
 
                 var freq = document.getElementById('frequency').value;
                 var pay_date = document.getElementById('payment_date').value;
@@ -216,6 +234,7 @@
                         success: function (data) {
                             if (data.pdoc_result.status == 'success') {
                                 spinner.style.display = 'none';
+                                download_link.style.display = 'none';
                                 btn_text_download.style.display = 'block';
                             }
                             //data.pdoc_result.status

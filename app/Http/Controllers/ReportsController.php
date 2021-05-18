@@ -98,6 +98,8 @@ class ReportsController extends Controller
         $month = $payment_date[1];
         $day = $payment_date[2];
 
+//            dd($hourly. ' '. $vac_pay. ' '. $year. ' '. $month. ' '. $day. ' '. ''. ' '. ''. ' '. $employer_province. ' '. $frequency);
+//
         $pdoc_result = $this->pdoc($hourly, $vac_pay, $year, $month, $day, $employee_name, $employer_name, $employer_province, $frequency);
 
         $employee_cpp = $pdoc_result['values']['CPP'];
@@ -105,7 +107,7 @@ class ReportsController extends Controller
         $federal_tax = $pdoc_result['values']['federalTax'];
         $employer_cpp = $pdoc_result['values2']['values']['employerCPP'];
         $employer_ei = $pdoc_result['values2']['values']['employerEI'];
-
+//
         $net_pay = ($hourly + $vac_pay + $stat_pay + $overtime_pay ) - ($employee_cpp + $employee_ei + $federal_tax);
         //        dd($total_hourly);
         //        $hourly = hours
@@ -132,6 +134,7 @@ class ReportsController extends Controller
         $paystub->save();
 
         return response()->json(array(
+            'status' => 'success',
             'total hours'=> $total_hours,
             'total stat' => $total_stat_hours,
             'total overtime' => $total_overtime_hours,
@@ -212,17 +215,20 @@ class ReportsController extends Controller
     }
 //
     public function pdoc($hourly, $vac_pay, $year, $month, $day, $employee_name, $employer_name, $province, $frequency){
+        include(app_path() . '\pdoc\simple_html_dom.php');
+        error_reporting(E_ALL); ini_set('display_errors', 1);
+//        dd($hourly. ' '. $vac_pay. ' '. $year. ' '. $month. ' '. $day. ' '. $employee_name. ' '. $employer_name. ' '. $province. ' '. $frequency);
 //        $hourly = '1088.27';
 //        $vac_pay = '43.53';
 //        $year = '2018';
 //        $month = '11';
 //        $day = '30';
-//        $employee_name = 'full name test';
-//        $employer_name = 'employer name';
+//        $employee_name = 'test';
+//        $employer_name = 'test';
 //        $province = 'ALBERTA';
 //        $frequency = 'SEMI_MONTHLY';
-        include(app_path() . '\pdoc\simple_html_dom.php');
-        touch('cra-cookies.txt');
+//
+//        touch('cra-cookies.txt');
 
         $retval = array();
         $retval['status'] = 'success';
@@ -296,32 +302,39 @@ class ReportsController extends Controller
                 "employerCPP" => array("Employer CPP contributions", 4),
                 "employerEI" => array("Employer EI contributions", 4),
             );
-// to get token
+
+            // to get token
             $result = $this->fetch("https://apps.cra-arc.gc.ca/ebci/rhpd/prot/welcome.action",
                 array(
                     'refer' => 'https://apps.cra-arc.gc.ca/ebci/rhpd/prot/welcome.action',
                     'post'  => false)
             );
-            $hidden = $this->getHiddenFormValueFromHTML($result);
+//            echo str_get_html($result);
+
+            $hidden = $this->getHiddenFormValueFromHTML(str_get_html($result));
             $data['step0'] = array_merge($data['step0'], $hidden);
 
-// doing step 0 -> choose salary
+
+            // doing step 0 -> choose salary
             $result = $this->fetch("https://apps.cra-arc.gc.ca/ebci/rhpd/prot/welcome.action",
                 array(
                     'refer' => 'https://apps.cra-arc.gc.ca/ebci/rhpd/prot/welcome.action?request_locale=en_CA',
                     'post'  => http_build_query($data['step0'], '', '&'))
             );
-
-            $hidden = $this->getHiddenFormValueFromHTML($result);
+//echo str_get_html($result);
+            $hidden = $this->getHiddenFormValueFromHTML(str_get_html($result));
             $data['step1'] = array_merge($data['step1'], $hidden);
-
-            // doing step 1 name, province, date
+//
+//
+//            // doing step 1 name, province, date
             $result = $this->fetch("https://apps.cra-arc.gc.ca/ebci/rhpd/prot/payrollDeductionsStep1_fromWelcome.action",
                 array(
                     'refer' => 'https://apps.cra-arc.gc.ca/ebci/rhpd/prot/payrollDeductionsStep1_fromWelcome.action',
                     'post' => http_build_query($data['step1'], '', '&'))
             );
-            $hidden = $this->getHiddenFormValueFromHTML($result);
+
+//            echo str_get_html($result);
+            $hidden = $this->getHiddenFormValueFromHTML(str_get_html($result));
             $data['step2'] = array_merge($data['step2'], $hidden);
 
             // doing step 2 income, vacation
@@ -330,29 +343,44 @@ class ReportsController extends Controller
                     'refer' => 'https://apps.cra-arc.gc.ca/ebci/rhpd/prot/payrollDeductionsStep2a_fromPayrollDeductionsStep1.action',
                     'post' => http_build_query($data['step2'], '', '&'))
             );
-            $hidden = $this->getHiddenFormValueFromHTML($result);
-            $data['step3'] = array_merge($data['step3'], $hidden);
+//            echo str_get_html($result);
 
+            $hidden = $this->getHiddenFormValueFromHTML(str_get_html($result));
+            $data['step3'] = array_merge($data['step3'], $hidden);
+////            echo 'data -----------------------------------------------';
+////            print_r($data);
+//
             // doing step 3
             $result = $this->fetch("https://apps.cra-arc.gc.ca/ebci/rhpd/prot/payrollDeductionsStep3_fromPayrollDeductionsStep2b.action",
                 array(
                     'refer' => 'https://apps.cra-arc.gc.ca/ebci/rhpd/prot/payrollDeductionsStep3_fromPayrollDeductionsStep2b.action',
                     'post' => http_build_query($data['step3'], '', '&'))
             );
-            $hidden = $this->getHiddenFormValueFromHTML($result);
+//            $hidden = $this->getHiddenFormValueFromHTML($result);
+//            $data['step4'] = array_merge($data['step4'], $hidden);
+
             // step 4
             $result2 = $this->fetch("https://apps.cra-arc.gc.ca/ebci/rhpd/prot/payrollDeductionsRemittanceSummary_fromPayrollDeductionsResults.action",
                 array(
+//                    'hidden' => $hidden,
                     'refer' => 'https://apps.cra-arc.gc.ca/ebci/rhpd/prot/payrollDeductionsRemittanceSummary_fromPayrollDeductionsResults.action',
                     'post' => http_build_query($data['step4'], '', '&'))
             );
-//            echo "<br> result: ------------------------------------------------------------";
-//            print_r($result);
-//            echo "<br>";
-//            echo "<br> result2: ------------------------------------------------------------";
-//            print_r($result2);
-//            echo "<br>";
-
+////            echo 'data ----------------------------------------------- <br/>';
+////            print_r($data);
+////            echo '<br />';
+////            echo 'result ---------------------------------------------';
+////            print_r($result);
+////            echo 'result2 --------------------------------------------';
+////            print_r($result2);
+////            $hidden = $this->getHiddenFormValueFromHTML($result2);
+//////            echo "<br> result: ------------------------------------------------------------";
+//////            print_r($result);
+//////            echo "<br>";
+//////            echo "<br> result2: ------------------------------------------------------------";
+//////            print_r($result2);
+//////            echo "<br>";
+////
             $lines = explode("\n", $result);
 //
             foreach ($lines as $linenumber => $line) {
@@ -375,7 +403,7 @@ class ReportsController extends Controller
             }
             $retval2['values'] = $values2;
         }
-
+//
         $retval['values2'] = $retval2;
 //        print json_encode($retval);
 //        print json_encode($retval2);
@@ -392,12 +420,16 @@ class ReportsController extends Controller
         curl_setopt( $ch, CURLOPT_AUTOREFERER, true );
         curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, true );
         curl_setopt( $ch, CURLOPT_POST, isset($z['post']) );
+//        curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, true );/* NEW */
+//        curl_setopt( $ch, CURLOPT_USERAGENT, "MozillaXYZ/1.0" );
+//        curl_setopt( $ch, CURLOPT_HEADER, 0 );
+//        curl_setopt( $ch, CURLOPT_TIMEOUT, 500 );
 
         if( isset($z['post']) )         curl_setopt( $ch, CURLOPT_POSTFIELDS, $z['post'] );
         if( isset($z['refer']) )        curl_setopt( $ch, CURLOPT_REFERER, $z['refer'] );
 
         curl_setopt( $ch, CURLOPT_USERAGENT, $useragent );
-        curl_setopt( $ch, CURLOPT_CONNECTTIMEOUT, 5 );
+        curl_setopt( $ch, CURLOPT_CONNECTTIMEOUT, 100 );
         curl_setopt( $ch, CURLOPT_COOKIEJAR,  'cra-cookies.txt' );
         curl_setopt( $ch, CURLOPT_COOKIEFILE, 'cra-cookies.txt' );
 
@@ -408,10 +440,7 @@ class ReportsController extends Controller
     }
 
     function getHiddenFormValueFromHTML($html) {
-        $html = str_get_html($html);
-        $nodes = $html->find("input[type=hidden]");
-        $hidden = array();
-        foreach ($nodes as $node) {
+        foreach ($html->find("input[type=hidden]") as $node) {
             $hidden[$node->attr['name']] = $node->attr['value'];
         }
         return $hidden;
