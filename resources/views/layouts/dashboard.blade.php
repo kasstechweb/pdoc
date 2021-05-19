@@ -93,7 +93,10 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-wallet"></i></div>
                                 paystubs
                             </a>
-
+                            <a class="nav-link @if(Route::current()->getName() == 'pd7a') active @endif" href="{{route('pd7a')}}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-money-check-alt"></i></div>
+                                pd7a
+                            </a>
                             <a class="nav-link @if(Route::current()->getName() == 'settings') active @endif" href="{{route('settings')}}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-cog"></i></div>
                                 Settings

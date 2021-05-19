@@ -57,6 +57,7 @@ class ReportsController extends Controller
                 ->with('settings', $settings);
         }
     }
+
     public function paystubsForm(Request $request){
         $frequencies = DB::table('frequency')->get();
         if ($request->method() == 'POST') {
@@ -290,6 +291,54 @@ class ReportsController extends Controller
         // download PDF file with download method
         $file_name = $employee->name. '_'. $data['pay_date']. '.pdf';
         return $pdf->download($file_name);
+
+    }
+
+    public function pd7a(Request $request) {
+
+        if ($request->method() == 'POST') {
+            $month = $request->input('month');
+            $year = $request->input('year');
+            $date_start = $year . '-'. $month . '-01';
+            $date_end = $year . '-'. $month . '-31';
+            // get year to date data
+            $totals = Paystub::where('employer_id', '=', Auth::id())->whereBetween('paid_date', [$date_start, $date_end])->get();
+
+            // do the calculations
+            $employees_list = array();
+            $total['hourly'] = 0; $total['stat'] = 0; $total['vac'] = 0; $total['overtime'] = 0;
+            $total['employee_cpp'] = 0; $total['employee_ei'] = 0; $total['ftax'] = 0;
+            $total['employees'] = 0;$total['employer_cpp'] = 0; $total['employer_ei'] = 0;
+            foreach ($totals as $stub){
+                if ( !in_array( $stub->employee_id, $employees_list)){
+                    array_push($employees_list, $stub->employee_id);
+                }
+                $total['hourly']      += $stub->hourly_qty * $stub->hourly_rate;
+                $total['stat']        += $stub->stat_qty * $stub->stat_rate;
+                $total['vac']         += $stub->vac_pay ;
+                $total['overtime']    += $stub->overtime_qty * $stub->overtime_rate;
+                $total['employee_cpp']         += $stub->cpp;
+                $total['employee_ei']          += $stub->ei;
+                $total['employer_cpp']         += $stub->employer_cpp;
+                $total['employer_ei']          += $stub->employer_ei;
+                $total['ftax']        += $stub->federal_tax;
+            }
+            $total['income'] = $total['hourly'] + $total['stat'] + $total['vac'] + $total['overtime'];
+            $total['total_cpp'] = $total['employee_cpp'] + $total['employer_cpp'] ;
+            $total['total_ei'] = $total['employee_ei'] + $total['employer_ei'] ;
+            $total['total_deductions'] = $total['ftax'] + $total['total_cpp'] + $total['total_ei'];
+            $total['employees'] = count($employees_list);
+//            dd($total);
+            return redirect(route('pd7a'))
+                ->withInput()
+                ->with('total', $total);
+//                ->with('settings', $settings);
+        }else {
+            return view('dashboard.reports.pd7a')
+                ->with('total', null)
+                ->with('month')
+                ->with('year');
+        }
 
     }
 
