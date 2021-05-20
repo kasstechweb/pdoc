@@ -133,7 +133,7 @@
                         <a onclick="print_pd7a({{old('month')}}, {{old('year')}})" class="btn btn-success btn-block" id="btn_text_download" href="javascript:void(0);">
                         <span>
                              <i class="fas fa-download"></i>
-                            Download Paystub
+                            Download PD7A Report
                         </span>
                         </a>
                     </li>

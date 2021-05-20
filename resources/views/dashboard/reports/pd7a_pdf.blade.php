@@ -54,11 +54,11 @@
 {{--    <div class="width-50 text-bold text-left d-block">Escapes Adventures Edmonton Inc.</div>--}}
 {{--</div>--}}
 <div class="pt-2 pr-2 pl-2 text-center">
-    <p class="width-20 text-10 text-bold text-left d-block m-0">5:20 PM</p>
-    <p class="width-75 text-bold d-block m-0">Escapes Adventures Edmonton Inc.</p>
+    <p class="width-20 text-10 text-bold text-left d-block m-0">{{ date("g:i A") }}</p>
+    <p class="width-75 text-bold d-block m-0">{{ $employer->name }}</p>
 </div>
 <div class="pr-2 pl-2 text-center" style="border-bottom: 2px solid black">
-    <p class="width-20 text-10 text-bold text-left d-block m-0">2018-12-12</p>
+    <p class="width-20 text-10 text-bold text-left d-block m-0">{{ date('Y-m-d') }}</p>
     <p class="width-75 text-bold d-block m-0">PD7A Summary</p>
     <p class="width-20 text-10 text-bold text-left d-block m-0"></p>
     <p class="width-75 text-13 text-bold d-block m-0">{{ $total['month_word'] }} {{ $total['year'] }}</p>

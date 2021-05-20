@@ -50,7 +50,7 @@ Route::any('/pd7a', [ReportsController::class, 'pd7a'])->name('pd7a');
 Route::get('/pd7apdf', [ReportsController::class, 'pd7apdf'])->name('pd7apdf');
 
 Route::any('/settings', [ReportsController::class, 'settings'])->name('settings');
-Route::get('/test', [ReportsController::class, 'testtttt']);
+//Route::get('/test', [ReportsController::class, 'testtttt']);
 // Employer
 Route::get('/profile', [EmployerController::class, 'viewProfile'])->name('profile');
 Route::post('/profile', [EmployerController::class, 'updateProfile'])->name('update_profile');

@@ -61,7 +61,7 @@ class ReportsController extends Controller
     public function paystubsForm(Request $request){
         $frequencies = DB::table('frequency')->get();
         if ($request->method() == 'POST') {
-            $employees = Employee::whereDate('termination_date', '>', $request->input('payment_date'))->get();
+            $employees = Employee::whereDate('termination_date', '>=', $request->input('payment_date'))->get();
 //            dd($employees);
             // get previous pay stubs same date and frequency using pay date and frequency
             $paystubs = Paystub::where([
@@ -102,6 +102,8 @@ class ReportsController extends Controller
         $employee = Employee::find($employee_id);
         $employee_rate = $employee->pay_rate;
         $employee_name = $employee->name;
+        $employee_cpp_exempt = $employee->cpp_exempt;
+        $employee_ei_exempt = $employee->ei_exempt;
 
         //  getting employee work hours
         $hours = Hour::where('employee_id', $employee_id)->whereBetween('work_date', [$start_date, $pay_date])->get();
@@ -187,9 +189,9 @@ class ReportsController extends Controller
         $paystub->vac_pay = $vac_pay;
         $paystub->overtime_qty = $total_overtime_hours;
         $paystub->overtime_rate = $employee_rate * $settings->overtime_amount;
-        if ($settings->max_cpp >= ($ytd['cpp'] + $employee_cpp)) {
+        if ($settings->max_cpp >= ($ytd['cpp'] + $employee_cpp) && !$employee_cpp_exempt) {
             $paystub->cpp = $employee_cpp;
-        }elseif ($settings->max_cpp >= ($ytd['cpp']) && $ytd['cpp'] != $settings->max_cpp){
+        }elseif ($settings->max_cpp >= ($ytd['cpp']) && $ytd['cpp'] != $settings->max_cpp && !$employee_cpp_exempt){
             if (($ytd['cpp'] + $employee_cpp) > $settings->max_cpp) {
                 $paystub->cpp = $settings->max_cpp - $ytd['cpp'];
             }else {
@@ -198,9 +200,9 @@ class ReportsController extends Controller
         }else {
             $paystub->cpp = 0;
         }
-        if ($settings->max_ei >= ($ytd['ei'] + $employee_ei)) {
+        if ($settings->max_ei >= ($ytd['ei'] + $employee_ei) && !$employee_ei_exempt) {
             $paystub->ei = $employee_ei;
-        }elseif ($settings->max_ei >= ($ytd['ei']) && $ytd['ei'] != $settings->max_ei){
+        }elseif ($settings->max_ei >= ($ytd['ei']) && $ytd['ei'] != $settings->max_ei  && !$employee_ei_exempt){
             if (($ytd['ei'] + $employee_ei) > $settings->max_ei) {
                 $paystub->ei = $settings->max_ei - $ytd['ei'];
             }else {
@@ -390,20 +392,23 @@ class ReportsController extends Controller
         $total['total_deductions'] = $total['ftax'] + $total['total_cpp'] + $total['total_ei'];
         $total['employees'] = count($employees_list);
 
+        $employer = Auth::user();
         // share data to view
         $data['name'] = 'test';
         view()->share('ytd','ytd');
         view()->share('total', $total);
+        view()->share('employer', $employer);
         $pdf = PDF::loadView('dashboard.reports.pd7a_pdf', $data);
 
         // download PDF file with download method
-        $file_name = 'test.pdf';
+
+        $file_name = $employer->name . '_'. $month . '_' . $year.'_pd7a.pdf';
         return $pdf->download($file_name);
     }
 
-    public function testtttt(){
-        return view('dashboard.reports.pd7a_pdf');
-    }
+//    public function testtttt(){
+//        return view('dashboard.reports.pd7a_pdf');
+//    }
 
     public function pdoc($hourly, $vac_pay, $year, $month, $day, $employee_name, $employer_name, $province, $frequency){
         include(app_path() . '\pdoc\simple_html_dom.php');
