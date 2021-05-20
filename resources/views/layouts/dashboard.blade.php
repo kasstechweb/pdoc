@@ -57,7 +57,7 @@
                     <div class="sb-sidenav-menu">
                         <div class="nav">
                             <div class="sb-sidenav-menu-heading">Core</div>
-                            <a class="nav-link @if(Route::current()->getName() == 'add_new_employee') active @endif" href="{{route('home')}}">
+                            <a class="nav-link @if(Route::current()->getName() == 'home') active @endif" href="{{route('home')}}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Dashboard
                             </a>
