@@ -11,7 +11,7 @@
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
                         <div class="form-group">
-                            <label class="small mb-1" for="name">{{ __('Name') }}</label>
+                            <label class="small mb-1 required" for="name">{{ __('Name') }}</label>
                             <input id="name" type="text" class="py-4 form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
 
                             @error('name')
@@ -22,7 +22,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="small mb-1" for="email">{{ __('E-Mail Address') }}</label>
+                            <label class="small mb-1 required" for="email">{{ __('E-Mail Address') }}</label>
                             <input id="email" type="email" class="py-4 form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
 
                             @error('email')
@@ -35,7 +35,7 @@
                         <div class="form-row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="small mb-1" for="password">{{ __('Password') }}</label>
+                                    <label class="small mb-1 required" for="password">{{ __('Password') }}</label>
                                     <input id="password" type="password" class="py-4 form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
 
                                     @error('password')
@@ -47,7 +47,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="small mb-1" for="password-confirm">{{ __('Confirm Password') }}</label>
+                                    <label class="small mb-1 required" for="password-confirm">{{ __('Confirm Password') }}</label>
                                     <input id="password-confirm" type="password" class="form-control py-4" name="password_confirmation" required autocomplete="new-password">
                                 </div>
                             </div>
@@ -56,7 +56,7 @@
                         <div class="form-row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="small mb-1" for="province">Province of Employment</label>
+                                    <label class="small mb-1 required" for="province">Province of Employment</label>
                                     <select name="province" id="province" class="form-control @error('province') is-invalid @enderror" id="province" required>
                                         <option value="">Select...</option>
                                         {{$provinces = DB::table('provinces')->get()}}
@@ -75,8 +75,8 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="small mb-1" for="pbn">Employer Payroll Business Number</label>
-                                    <input class="form-control py-4 @error('pbn') is-invalid @enderror" id="pbn" type="text" name="pbn" value="{{ old('pbn') }}" />
+                                    <label class="small mb-1 required" for="pbn">Employer Payroll Business Number</label>
+                                    <input class="form-control py-4 @error('pbn') is-invalid @enderror" id="pbn" type="text" name="pbn" value="{{ old('pbn') }}" required/>
 
                                     @error('pbn')
                                     <span class="invalid-feedback" role="alert">
@@ -88,7 +88,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="small mb-1" for="address">Employer Address</label>
+                            <label class="small mb-1 required" for="address">Employer Address</label>
                             <input class="form-control py-4 @error('address') is-invalid @enderror" id="address" type="text" aria-describedby="emailHelp" name="address" value="{{ old('address') }}" required />
 
                             @error('address')
