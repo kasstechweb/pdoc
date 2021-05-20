@@ -129,10 +129,32 @@
                         Remittance for period
                         <span class="badge badge-primary badge-pill">{{number_format(Session::get('total')['total_deductions'], 2)}}</span>
                     </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <a onclick="print_pd7a({{old('month')}}, {{old('year')}})" class="btn btn-success btn-block" id="btn_text_download" href="javascript:void(0);">
+                        <span>
+                             <i class="fas fa-download"></i>
+                            Download Paystub
+                        </span>
+                        </a>
+                    </li>
                 </ul>
+
                 @endif
             </div>
         </div>
     </div>
+
+@endsection
+
+@section('after_load')
+    <script type="text/javascript">
+        function print_pd7a(month, year){
+            console.log('clicked')
+            var get_request = 'month=' + month;
+            get_request += '&year=' + year;
+
+            window.open('/pd7apdf?' + get_request, '_blank')
+        }
+    </script>
 
 @endsection

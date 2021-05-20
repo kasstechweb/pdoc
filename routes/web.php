@@ -45,6 +45,7 @@ Route::get('/pdoc', [ReportsController::class, 'pdocAjax'])->name('pdoc');
 Route::get('/paystubpdf', [ReportsController::class, 'paystubPdf'])->name('pastub_pdf');
 
 Route::any('/pd7a', [ReportsController::class, 'pd7a'])->name('pd7a');
+Route::get('/pd7apdf', [ReportsController::class, 'pd7apdf'])->name('pd7apdf');
 
 Route::any('/settings', [ReportsController::class, 'settings'])->name('settings');
 Route::get('/test', [ReportsController::class, 'testtttt']);

@@ -342,38 +342,67 @@ class ReportsController extends Controller
 
     }
 
-    public function testtttt(){
-        // getting employee details
-        $employee = Employee::find($employee_id);
-        $employee_rate = $employee->pay_rate;
-        $employee_name = $employee->name;
+    public function pd7apdf(Request $request) {
+        $month = $request->month;
+        $year = $request->year;
 
-        //  getting employee work hours
-        $hours = Hour::where('employee_id', $employee_id)->whereBetween('work_date', [$start_date, $pay_date])->get();
-        $total_hours = 0;$total_stat_hours = 0;$total_overtime_hours = 0;
+        $months = array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
+        $months_sm = array('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec');
 
-        foreach ($hours as $hour){
-            if ($hour->is_state_holiday == 1){
-                $total_stat_hours += $hour->work_hours;
-            }elseif ($hour->is_over_time == 1){
-                $total_overtime_hours += $hour->work_hours;
-            }else {
-                $total_hours += $hour->work_hours;
+        for ($i=0; $i < count($months); $i++) {
+            if (($i+1) == $month) {
+               $total['month_word'] = $months[$i];
+               $total['month_small'] = $months_sm[$i];
             }
+
         }
 
-        // get from settings
-        $settings = Setting::where('id', 1)->first();
-//        dd($settings->stat_amount);
-        // do calculations
-        $hourly = round($total_hours * $employee_rate, 2);
-        $vac_pay = round($hourly * 0.04, 2);
-        $stat_pay = round($total_stat_hours * ($employee_rate * $settings->stat_amount), 2); //TODO::::: get it from settings
-        $overtime_pay = round($total_overtime_hours * ($employee_rate * $settings->overtime_amount), 2); // TODO::::::: get from settings
+        $total['month'] = $month;
+        $total['year'] = $year;
 
+        $date_start = $year . '-'. $month . '-01';
+        $date_end = $year . '-'. $month . '-31';
+        // get year to date data
+        $totals = Paystub::where('employer_id', '=', Auth::id())->whereBetween('paid_date', [$date_start, $date_end])->get();
 
+        // do the calculations
+        $employees_list = array();
+        $total['hourly'] = 0; $total['stat'] = 0; $total['vac'] = 0; $total['overtime'] = 0;
+        $total['employee_cpp'] = 0; $total['employee_ei'] = 0; $total['ftax'] = 0;
+        $total['employees'] = 0;$total['employer_cpp'] = 0; $total['employer_ei'] = 0;
+        foreach ($totals as $stub){
+            if ( !in_array( $stub->employee_id, $employees_list)){
+                array_push($employees_list, $stub->employee_id);
+            }
+            $total['hourly']      += $stub->hourly_qty * $stub->hourly_rate;
+            $total['stat']        += $stub->stat_qty * $stub->stat_rate;
+            $total['vac']         += $stub->vac_pay ;
+            $total['overtime']    += $stub->overtime_qty * $stub->overtime_rate;
+            $total['employee_cpp']         += $stub->cpp;
+            $total['employee_ei']          += $stub->ei;
+            $total['employer_cpp']         += $stub->employer_cpp;
+            $total['employer_ei']          += $stub->employer_ei;
+            $total['ftax']        += $stub->federal_tax;
+        }
+        $total['income'] = $total['hourly'] + $total['stat'] + $total['vac'] + $total['overtime'];
+        $total['total_cpp'] = $total['employee_cpp'] + $total['employer_cpp'] ;
+        $total['total_ei'] = $total['employee_ei'] + $total['employer_ei'] ;
+        $total['total_deductions'] = $total['ftax'] + $total['total_cpp'] + $total['total_ei'];
+        $total['employees'] = count($employees_list);
 
-        dd($stat_pay);
+        // share data to view
+        $data['name'] = 'test';
+        view()->share('ytd','ytd');
+        view()->share('total', $total);
+        $pdf = PDF::loadView('dashboard.reports.pd7a_pdf', $data);
+
+        // download PDF file with download method
+        $file_name = 'test.pdf';
+        return $pdf->download($file_name);
+    }
+
+    public function testtttt(){
+        return view('dashboard.reports.pd7a_pdf');
     }
 
     public function pdoc($hourly, $vac_pay, $year, $month, $day, $employee_name, $employer_name, $province, $frequency){
