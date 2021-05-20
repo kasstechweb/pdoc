@@ -75,7 +75,7 @@
                                         View Hours History
                                     </a>
                                 @elseif($action == 'view_all')
-                                    <a class="btn btn-primary">
+                                    <a class="btn btn-primary" href="{{ route('update_employee', ['id' => $employee->id]) }}">
                                         <i class="fas fa-pen"></i>
                                         Edit
                                     </a>
