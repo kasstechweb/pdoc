@@ -21,7 +21,7 @@
                     <div class="form-row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="small mb-1" for="work_date">Date</label>
+                                <label class="small mb-1 required" for="work_date">Date</label>
                                 <input class="form-control py-4 @error('work_date') is-invalid @enderror" id="work_date" type="date" name="work_date" value="{{ old('work_date') }}" required/>
 
                                 @error('work_date')
@@ -33,7 +33,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="small mb-1" for="work_hours">Work Hours </label>
+                                <label class="small mb-1 required" for="work_hours">Work Hours </label>
                                 <input class="form-control py-4 @error('work_hours') is-invalid @enderror" id="work_hours" type="text" name="work_hours" value="{{ old('work_hours') }}" required/>
 
                                 @error('work_hours')

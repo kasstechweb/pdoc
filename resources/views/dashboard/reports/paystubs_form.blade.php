@@ -41,7 +41,7 @@
                     <div class="form-row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="small mb-1" for="frequency">Pay Frequency</label>
+                                <label class="small mb-1 required" for="frequency">Pay Frequency</label>
 {{--                                <input class="form-control py-4 @error('from_date') is-invalid @enderror" id="from_date" type="date" name="from_date" value="{{ $from_date?$from_date:''}}" required/>--}}
                                 <select name="frequency" id="frequency" class="form-control @error('frequency') is-invalid @enderror" id="province" required>
                                     <option value="">Select...</option>
@@ -59,7 +59,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="small mb-1" for="payment_date">Payment Date</label>
+                                <label class="small mb-1 required" for="payment_date">Payment Date</label>
                                 <input class="form-control py-4 @error('payment_date') is-invalid @enderror" id="payment_date" type="date" name="payment_date" value="{{ $payment_date?$payment_date:'' }}" required/>
 
                                 @error('payment_date')

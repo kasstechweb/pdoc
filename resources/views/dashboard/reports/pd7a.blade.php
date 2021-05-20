@@ -21,7 +21,7 @@
                     <div class="form-row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="small mb-1" for="month">Month</label>
+                                <label class="small mb-1 required" for="month">Month</label>
                                 {{--                                <input class="form-control py-4 @error('from_date') is-invalid @enderror" id="from_date" type="date" name="from_date" value="{{ $from_date?$from_date:''}}" required/>--}}
                                 <select name="month" id="month" class="form-control @error('month') is-invalid @enderror" required>
                                     <option value="">Select...</option>
@@ -50,7 +50,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="small mb-1" for="year">Year</label>
+                                <label class="small mb-1 required" for="year">Year</label>
                                 {{--                                <input class="form-control py-4 @error('from_date') is-invalid @enderror" id="from_date" type="date" name="from_date" value="{{ $from_date?$from_date:''}}" required/>--}}
                                 <select name="year" id="year" class="form-control @error('year') is-invalid @enderror" required>
                                     <option value="">Select...</option>

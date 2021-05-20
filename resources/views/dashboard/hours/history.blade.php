@@ -22,7 +22,7 @@
                     <div class="form-row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="small mb-1" for="from_date">From Date</label>
+                                <label class="small mb-1 required" for="from_date">From Date</label>
                                 <input class="form-control py-4 @error('from_date') is-invalid @enderror" id="from_date" type="date" name="from_date" value="{{ $from_date?$from_date:''}}" required/>
 
                                 @error('from_date')
@@ -34,7 +34,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="small mb-1" for="to_date">To Date</label>
+                                <label class="small mb-1 required" for="to_date">To Date</label>
                                 <input class="form-control py-4 @error('to_date') is-invalid @enderror" id="to_date" type="date" name="to_date" value="{{ $to_date?$to_date:'' }}" required/>
 
                                 @error('to_date')

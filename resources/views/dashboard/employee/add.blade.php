@@ -20,8 +20,8 @@
                     <div class="form-row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="small mb-1" for="sin">Employee Social Insurance Number </label>
-                                <input class="form-control py-4 @error('sin') is-invalid @enderror" id="sin" type="text" name="sin" value="{{ old('sin') }}" />
+                                <label class="small mb-1 required" for="sin">Employee Social Insurance Number </label>
+                                <input class="form-control py-4 @error('sin') is-invalid @enderror" id="sin" type="text" name="sin" value="{{ old('sin') }}" required/>
 
                                 @error('sin')
                                     <span class="invalid-feedback" role="alert">
@@ -32,8 +32,8 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="small mb-1" for="name">Employee Name</label>
-                                <input class="form-control py-4 @error('name') is-invalid @enderror" id="name" type="text" name="name" value="{{ old('name') }}"/>
+                                <label class="small mb-1 required" for="name">Employee Name</label>
+                                <input class="form-control py-4 @error('name') is-invalid @enderror" id="name" type="text" name="name" value="{{ old('name') }}" required/>
 
                                 @error('name')
                                 <span class="invalid-feedback" role="alert">
@@ -61,8 +61,8 @@
 -->
 
                     <div class="form-group">
-                        <label class="small mb-1" for="address">Employee Address</label>
-                        <input class="form-control py-4 @error('address') is-invalid @enderror" id="address" type="text" aria-describedby="emailHelp" name="address" value="{{ old('address') }}" />
+                        <label class="small mb-1 required" for="address">Employee Address</label>
+                        <input class="form-control py-4 @error('address') is-invalid @enderror" id="address" type="text" aria-describedby="emailHelp" name="address" value="{{ old('address') }}" required/>
 
                         @error('address')
                         <span class="invalid-feedback" role="alert">
@@ -74,8 +74,8 @@
                     <div class="form-row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="small mb-1" for="hire">Employee Hire Date</label>
-                                <input class="form-control py-4 @error('hire_date') is-invalid @enderror" id="hire" type="date" name="hire_date" value="{{ old('hire_date') }}" />
+                                <label class="small mb-1 required" for="hire">Employee Hire Date</label>
+                                <input class="form-control py-4 @error('hire_date') is-invalid @enderror" id="hire" type="date" name="hire_date" value="{{ old('hire_date') }}" required/>
 
                                 @error('hire_date')
                                 <span class="invalid-feedback" role="alert">
@@ -86,8 +86,8 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="small mb-1" for="termination_date">Employee Termination Date</label>
-                                <input class="form-control py-4 @error('termination_date') is-invalid @enderror" id="termination_date" type="date" name="termination_date"  value="{{ old('termination_date') }}"/>
+                                <label class="small mb-1 required" for="termination_date">Employee Termination Date</label>
+                                <input class="form-control py-4 @error('termination_date') is-invalid @enderror" id="termination_date" type="date" name="termination_date"  value="{{ old('termination_date') }}" required/>
 
                                 @error('termination_date')
                                 <span class="invalid-feedback" role="alert">
@@ -101,8 +101,8 @@
                     <div class="form-row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="small mb-1" for="pay_rate">Employee Pay Rate</label>
-                                <input class="form-control py-4 @error('pay_rate') is-invalid @enderror" id="pay_rate" type="text" name="pay_rate" value="{{ old('pay_rate') }}"/>
+                                <label class="small mb-1 required" for="pay_rate">Employee Pay Rate</label>
+                                <input class="form-control py-4 @error('pay_rate') is-invalid @enderror" id="pay_rate" type="text" name="pay_rate" value="{{ old('pay_rate') }}" required/>
 
                                 @error('pay_rate')
                                 <span class="invalid-feedback" role="alert">
