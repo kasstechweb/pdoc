@@ -30,6 +30,7 @@ Route::get('/home', [DashboardController::class, 'viewHome'])->name('home');
 Route::get('/add_new_employee', [EmployeeController::class, 'addNewEmployee'])->name('add_new_employee');
 Route::post('/add_new_employee', [EmployeeController::class, 'storeNewEmployee'])->name('store_new_employee');
 Route::any('/update_employee/{id}', [EmployeeController::class, 'updateEmployee'])->name('update_employee');
+Route::get('/delete_employee/{id}', [EmployeeController::class, 'deleteEmployee'])->name('delete_employee');
 //Route::get('/view_all_employees', [EmployeeController::class, 'viewAllEmployees'])->name('view_all_employees');
 //Route::post('/employee_hours', [EmployeeController::class, 'storeEmployeeHours'])->name('store_employee_hours');
 //Route::post('/employee_hours_history', [EmployeeController::class, 'employeeHoursHistory'])->name('employee_hours_history');

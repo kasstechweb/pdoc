@@ -131,5 +131,12 @@ class EmployeeController extends Controller
 
     }
 
+    public function deleteEmployee($id){
+        $employee  = Employee::find($id);
+        $employee->delete();
+        return redirect(route('view_all_employees', ['action' => 'view_all']))
+            ->with('msg', 'Deleting Employee Success!');
+    }
+
 
 }

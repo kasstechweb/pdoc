@@ -11,14 +11,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3f4fd3e6-61ca-443e-855e-b1ffe3375a0a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/pdoc.zip" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/js/app.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/views/dashboard/employee/update.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/EmployeeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/EmployeeController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/app.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/app.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/dashboard/all_employees.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/dashboard/all_employees.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
@@ -159,7 +153,7 @@
       <workItem from="1621059587752" duration="392000" />
       <workItem from="1621060148059" duration="111208000" />
       <workItem from="1621418191791" duration="26751000" />
-      <workItem from="1621506127231" duration="15390000" />
+      <workItem from="1621506127231" duration="16859000" />
     </task>
     <servers />
   </component>

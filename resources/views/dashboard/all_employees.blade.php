@@ -79,7 +79,7 @@
                                         <i class="fas fa-pen"></i>
                                         Edit
                                     </a>
-                                    <a class="btn btn-danger">
+                                    <a class="btn btn-danger" href="{{ route('delete_employee', ['id' => $employee->id]) }}">
                                         <i class="fas fa-trash-alt"></i>
                                         Delete
                                     </a>
