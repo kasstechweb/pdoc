@@ -411,7 +411,7 @@ class ReportsController extends Controller
 //    }
 
     public function pdoc($hourly, $vac_pay, $year, $month, $day, $employee_name, $employer_name, $province, $frequency){
-        include(app_path() . '\pdoc\simple_html_dom.php');
+        include(app_path() . '/pdoc/simple_html_dom.php');
         error_reporting(E_ALL); ini_set('display_errors', 1);
 //        dd($hourly. ' '. $vac_pay. ' '. $year. ' '. $month. ' '. $day. ' '. $employee_name. ' '. $employer_name. ' '. $province. ' '. $frequency);
 //        $hourly = '1088.27';
