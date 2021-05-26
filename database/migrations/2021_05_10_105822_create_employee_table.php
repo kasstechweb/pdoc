@@ -21,7 +21,7 @@ class CreateEmployeeTable extends Migration
 //            $table->string('phone')->unique();
             $table->string('address');
             $table->date('hire_date');
-            $table->date('termination_date');
+            $table->date('termination_date')->nullable();
             $table->decimal('pay_rate')->unsigned();
             $table->boolean('ei_exempt');
             $table->boolean('cpp_exempt');
