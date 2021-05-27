@@ -88,7 +88,6 @@ class EmployeeController extends Controller
                 'sin' => 'required',
                 'name' => 'required',
                 'hire_date' => 'required',
-                'termination_date' => 'required',
                 'address' => 'required',
                 'pay_rate' => 'required|numeric|between:0,99.99',
             ], $messages);
@@ -106,7 +105,11 @@ class EmployeeController extends Controller
 //            $employee->phone = $request->input('phone');
                 $employee->address = $request->input('address');
                 $employee->hire_date = $request->input('hire_date');
-                $employee->termination_date = $request->input('termination_date');
+                if ($request->input('termination_date') != null) {
+                    $employee->termination_date = $request->input('termination_date');
+                }else {
+                    $employee->termination_date = '3001-12-31';
+                }
                 $employee->pay_rate = $request->input('pay_rate');
                 // changing checkbox on to boolean
                 if ($request->input('ei_exempt') == 'on') {

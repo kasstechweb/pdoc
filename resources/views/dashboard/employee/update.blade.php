@@ -71,8 +71,8 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="small mb-1 required" for="termination_date">Employee Termination Date</label>
-                                <input class="form-control py-4 @error('termination_date') is-invalid @enderror" id="termination_date" type="date" name="termination_date"  value="{{ $employee->termination_date  }}" required/>
+                                <label class="small mb-1" for="termination_date">Employee Termination Date</label>
+                                <input class="form-control py-4 @error('termination_date') is-invalid @enderror" id="termination_date" type="date" name="termination_date"  value="{{ $employee->termination_date != '3001-12-31'? $employee->termination_date : ''  }}"/>
 
                                 @error('termination_date')
                                 <span class="invalid-feedback" role="alert">
