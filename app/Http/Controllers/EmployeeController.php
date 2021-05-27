@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Employee;
 use App\Models\Hour;
+use App\Models\Paystub;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -138,6 +139,11 @@ class EmployeeController extends Controller
     }
 
     public function deleteEmployee($id){
+        // delete hours first
+        $hours = Hour::where('employee_id', $id)->get();
+        Hour::destroy($hours);
+        $paystubs = Paystub::where('employee_id', $id)->get();
+        Paystub::destroy($paystubs);
         $employee  = Employee::find($id);
         $employee->delete();
         return redirect(route('view_all_employees', ['action' => 'view_all']))
