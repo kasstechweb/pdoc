@@ -9,8 +9,8 @@
         <h1 class="mt-4"></h1>
         <ol class="breadcrumb mb-4">
             <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-            <li class="breadcrumb-item active">Hours</li>
-            <li class="breadcrumb-item active">Store Employee Hours</li>
+            <li class="breadcrumb-item active">Reports</li>
+            <li class="breadcrumb-item active">pd7a</li>
         </ol>
         <div class="card mb-4">
             {{--            <div class="card-header">Add Employee Hours</div>--}}

@@ -192,7 +192,9 @@
                     <div class="sb-sidenav-footer">
                         <div class="small">Logged in as:</div>
                         @if(Auth::check())
-                            Auth::user()->name
+                            {{ Auth::user()->name }}
+                        @else
+                            Guest
                         @endif
                     </div>
                 </nav>
