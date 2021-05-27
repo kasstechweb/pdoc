@@ -137,6 +137,12 @@
                                                         Download Paystub
                                                     </span>
                                                     </a>
+                                                    <a class="btn btn-danger btn-block" href="{{ route('delete_paystub', ['id'=> $paystub->id]) }}">
+                                                    <span>
+                                                         <i class="fas fa-download"></i>
+                                                        Delete Paystub
+                                                    </span>
+                                                    </a>
                                                 @endif
                                             @endif
                                         @endforeach
@@ -335,6 +341,15 @@
                 //     }
                 // });
             }
+
+            // function delete_paystub(id) {
+            //     var get_request = 'id=' + id;
+            //     // get_request += '&frequency=' + frequency;
+            //
+            //     window.open('/delete_paystub?' + get_request, '_blank')
+            //
+            //     console.log('id ' + id);
+            // }
 
 
         </script>

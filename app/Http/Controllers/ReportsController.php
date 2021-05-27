@@ -296,6 +296,13 @@ class ReportsController extends Controller
 
     }
 
+    public function deletePaystub($id){
+        $paystub = Paystub::find($id);
+        $paystub->delete();
+        return redirect(route('paystubs_form'))
+            ->with('msg', 'Paystub Delete Success!');
+    }
+
     public function pd7a(Request $request) {
 
         if ($request->method() == 'POST') {

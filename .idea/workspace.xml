@@ -12,9 +12,9 @@
   <component name="ChangeListManager">
     <list default="true" id="3f4fd3e6-61ca-443e-855e-b1ffe3375a0a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/EmployeeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/EmployeeController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2021_05_10_105822_create_employee_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_05_10_105822_create_employee_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/dashboard/employee/add.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/dashboard/employee/add.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ReportsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ReportsController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/dashboard/reports/paystubs_form.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/dashboard/reports/paystubs_form.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -195,7 +195,7 @@
       <workItem from="1621060148059" duration="111208000" />
       <workItem from="1621418191791" duration="26751000" />
       <workItem from="1621506127231" duration="24785000" />
-      <workItem from="1622040076716" duration="831000" />
+      <workItem from="1622040076716" duration="3960000" />
     </task>
     <servers />
   </component>
