@@ -61,7 +61,7 @@ class ReportsController extends Controller
     public function paystubsForm(Request $request){
         $frequencies = DB::table('frequency')->get();
         if ($request->method() == 'POST') {
-            $employees = Employee::whereDate('termination_date', '>=', $request->input('payment_date'))->get();
+            $employees = Employee::where('employer_id', Auth::id())->whereDate('termination_date', '>=', $request->input('payment_date'))->get();
 //            dd($employees);
             // get previous pay stubs same date and frequency using pay date and frequency
             $paystubs = Paystub::where([

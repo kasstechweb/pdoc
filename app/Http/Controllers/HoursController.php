@@ -16,7 +16,7 @@ class HoursController extends Controller
     }
 
     public function allEmployeesView($action){
-        $employees = Employee::all();
+        $employees = Employee::where('employer_id', Auth::id())->get();
         return view('dashboard.all_employees')
             ->with('employees', $employees)
             ->with('action', $action);
