@@ -8,6 +8,7 @@ use App\Models\Paystub;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class EmployeeController extends Controller
@@ -18,7 +19,9 @@ class EmployeeController extends Controller
     }
 
     public function addNewEmployee() {
-        return view('dashboard.employee.add');
+        $frequencies = DB::table('frequency')->get();
+        return view('dashboard.employee.add')
+            ->with('frequencies', $frequencies);
     }
 
 
@@ -35,6 +38,7 @@ class EmployeeController extends Controller
                 'hire_date' => 'required',
                 'address' => 'required',
                 'pay_rate' => 'required|numeric|between:0,99.99',
+                'frequency' => 'required',
             ], $messages);
 
             if ($validator->fails()) {
@@ -67,6 +71,7 @@ class EmployeeController extends Controller
                     $employee->cpp_exempt = 0;
                 }
 
+                $employee->pay_frequency = $request->input('frequency');
                 $employee->employer_id = auth()->id();
                 $employee->save();
 
@@ -124,6 +129,7 @@ class EmployeeController extends Controller
                     $employee->cpp_exempt = 0;
                 }
 
+                $employee->pay_frequency = $request->input('frequency');
                 $employee->employer_id = auth()->id();
                 $employee->save();
 
@@ -132,8 +138,10 @@ class EmployeeController extends Controller
             }
         }else {
             $employee = Employee::find($id);
+            $frequencies = DB::table('frequency')->get();
             return view('dashboard.employee.update')
-                ->with('employee', $employee);
+                ->with('employee', $employee)
+                ->with('frequencies', $frequencies);
         }
 
     }

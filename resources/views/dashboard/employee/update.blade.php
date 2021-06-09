@@ -1,7 +1,7 @@
 @extends('layouts.dashboard')
 
 @section('title')
-    PDOC - Add New Employee
+    PDOC - Update Employee
 @endsection
 
 @section('content')
@@ -90,6 +90,25 @@
                                 <input class="form-control py-4 @error('pay_rate') is-invalid @enderror" id="pay_rate" type="text" name="pay_rate" value="{{ $employee->pay_rate  }}" required/>
 
                                 @error('pay_rate')
+                                <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="small mb-1 required" for="frequency">Pay Frequency</label>
+                                {{--                                <input class="form-control py-4 @error('from_date') is-invalid @enderror" id="from_date" type="date" name="from_date" value="{{ $from_date?$from_date:''}}" required/>--}}
+                                <select name="frequency" id="frequency" class="form-control @error('frequency') is-invalid @enderror" id="province" required>
+                                    <option value="">Select...</option>
+                                    @foreach($frequencies as $frequency)
+                                        <option @if($employee->pay_frequency == $frequency->option_value) selected @endif value="{{ $frequency->option_value }}">{{ $frequency->name }}</option>
+                                    @endforeach
+                                </select>
+                                {{--                                <input class="form-control py-4 @error('province') is-invalid @enderror" id="province" type="text" name="province" value="{{ old('province') }}"/>--}}
+
+                                @error('$frequency')
                                 <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>

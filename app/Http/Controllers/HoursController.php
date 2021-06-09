@@ -6,6 +6,7 @@ use App\Models\Employee;
 use App\Models\Hour;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class HoursController extends Controller
@@ -17,9 +18,11 @@ class HoursController extends Controller
 
     public function allEmployeesView($action){
         $employees = Employee::where('employer_id', Auth::id())->get();
+        $frequencies = DB::table('frequency')->get();
         return view('dashboard.all_employees')
             ->with('employees', $employees)
-            ->with('action', $action);
+            ->with('action', $action)
+            ->with('frequencies', $frequencies);
     }
 
     public function addHours($id, Request $request){

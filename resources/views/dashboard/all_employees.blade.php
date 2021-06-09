@@ -45,7 +45,7 @@
                         <th></th>
                         <th>#</th>
                         <th>name</th>
-{{--                        <th>Hire Date</th>--}}
+                        <th>Pay frequency</th>
 {{--                        <th>Termination Date</th>--}}
                         <th>SIN #</th>
                         <th></th>
@@ -60,6 +60,12 @@
                             <td class="details-control"></td>
                             <td>{{ $employee->id }}</td>
                             <td>{{ $employee->name }}</td>
+                            @foreach($frequencies as $frequency)
+                                @if($frequency->option_value == $employee->pay_frequency)
+                                    <td>{{ $frequency->name }}</td>
+                                @endif
+                            @endforeach
+{{--                           {{ $employee->pay_frequency }}--}}
 {{--                            <td>{{ $employee->hire_date }}</td>--}}
 {{--                            <td>{{ $employee->termination_date }}</td>--}}
                             <td>{{ $employee->sin }}</td>
