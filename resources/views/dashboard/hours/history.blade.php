@@ -83,8 +83,8 @@
                             <tr>
                                 <td>
                                     Hours: {{ $history->work_hours }}
-                                    sta {{$history->is_state_holiday}}
-                                    ot: {{$history->is_over_time}}
+{{--                                    sta {{$history->is_state_holiday}}--}}
+{{--                                    ot: {{$history->is_over_time}}--}}
                                     @php
                                         if ($history->is_state_holiday == 1){
                                             $total_stat_hours += $history->work_hours;

@@ -42,6 +42,11 @@ class HoursController extends Controller
                 $hours = new Hour();
                 $hours->work_date = $request->input('work_date');
                 $hours->work_hours = $request->input('work_hours');
+
+                if ($request->input('stat_holiday') == 'on' && $request->input('over_time') == 'on') {
+                    return redirect(route('add_employee_hours', ['id' => $request->input('employee_id')]))
+                        ->with('error', 'please choose stat holiday or over time!');
+                }
                 if ($request->input('stat_holiday') == 'on') {
                     $hours->is_state_holiday = 1;
                 }else {
@@ -61,8 +66,11 @@ class HoursController extends Controller
             }
 
         }else { // get method
+            $employee = Employee::find($id);
+            $frequency = DB::table('frequency')->where('option_value', $employee->pay_frequency)->first();
             return view('dashboard.hours.add')
-                ->with('employee_id', $id);
+                ->with('employee_id', $id)
+                ->with('frequency', $frequency);
         }
     }
 

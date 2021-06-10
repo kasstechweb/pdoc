@@ -12,12 +12,9 @@
   <component name="ChangeListManager">
     <list default="true" id="3f4fd3e6-61ca-443e-855e-b1ffe3375a0a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/EmployeeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/EmployeeController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/HoursController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/HoursController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2021_05_10_105822_create_employee_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_05_10_105822_create_employee_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/dashboard/all_employees.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/dashboard/all_employees.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/dashboard/employee/add.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/dashboard/employee/add.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/dashboard/employee/update.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/dashboard/employee/update.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/dashboard/hours/add.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/dashboard/hours/add.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/dashboard/hours/history.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/dashboard/hours/history.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -208,7 +205,7 @@
       <workItem from="1621506127231" duration="24785000" />
       <workItem from="1622040076716" duration="9125000" />
       <workItem from="1623252787034" duration="490000" />
-      <workItem from="1623256128017" duration="2465000" />
+      <workItem from="1623256128017" duration="10923000" />
     </task>
     <servers />
   </component>
