@@ -43,7 +43,7 @@
                             <div class="form-group">
                                 <label class="small mb-1 required" for="frequency">Pay Frequency</label>
 {{--                                <input class="form-control py-4 @error('from_date') is-invalid @enderror" id="from_date" type="date" name="from_date" value="{{ $from_date?$from_date:''}}" required/>--}}
-                                <select name="frequency" id="frequency" class="form-control @error('frequency') is-invalid @enderror" id="province" required>
+                                <select onchange="showPeriod();" name="frequency" id="frequency" class="form-control @error('frequency') is-invalid @enderror" id="province" required>
                                     <option value="">Select...</option>
                                     @foreach($frequencies as $frequency)
                                         <option @if($freq == $frequency->option_value) selected @endif value="{{ $frequency->option_value }}">{{ $frequency->name }}</option>
@@ -60,7 +60,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="small mb-1 required" for="payment_date">Payment Date</label>
-                                <input class="form-control py-4 @error('payment_date') is-invalid @enderror" id="payment_date" type="date" name="payment_date" value="{{ $payment_date?$payment_date:'' }}" required/>
+                                <input onchange="showPeriod();" class="form-control py-4 @error('payment_date') is-invalid @enderror" id="payment_date" type="date" name="payment_date" value="{{ $payment_date?$payment_date:'' }}" required/>
 
                                 @error('payment_date')
                                 <span class="invalid-feedback" role="alert">
@@ -71,18 +71,24 @@
                         </div>
                     </div>
 
+{{--                    <div class="form-row">--}}
+{{--                        <div class="col-md-4">--}}
+{{--                            <a onclick="payPeriod()" class="btn btn-success btn-block">Show pay period</a>--}}
+{{--                        </div>--}}
+{{--                        <div class="col-md-8">--}}
+{{--                            <div class="form-group">--}}
+{{--                                <input class="form-control py-4" id="pay_period" type="text" aria-describedby="emailHelp" name="pay_period" value="pay period from: to" disabled/>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+
                     <div class="form-row">
-                        <div class="col-md-4">
-                            <a onclick="payPeriod()" class="btn btn-success btn-block">Show pay period</a>
-                        </div>
-                        <div class="col-md-8">
+                        <div class="col">
                             <div class="form-group">
-                                <input class="form-control py-4" id="pay_period" type="text" aria-describedby="emailHelp" name="pay_period" value="pay period from: to" disabled/>
+                                <input class="form-control py-4" id="pay_period" type="text" aria-describedby="emailHelp" name="pay_period" value="Choose date above to show pay period or check employees down" disabled/>
                             </div>
                         </div>
                     </div>
-
-
 
                     <div class="form-group mt-4 mb-0">
                         <button type="submit" class="btn btn-primary btn-block">
@@ -105,6 +111,7 @@
                             <th></th>
                             <th>#</th>
                             <th>name</th>
+                            <th>Pay frequency</th>
                             {{--                        <th>Hire Date</th>--}}
                             {{--                        <th>Termination Date</th>--}}
                             <th>SIN #</th>
@@ -120,6 +127,11 @@
                                 <td class="details-control"></td>
                                 <td>{{ $employee->id }}</td>
                                 <td>{{ $employee->name }}</td>
+                                @foreach($frequencies as $frequency)
+                                    @if($frequency->option_value == $employee->pay_frequency)
+                                        <td>{{ $frequency->name }}</td>
+                                    @endif
+                                @endforeach
                                 {{--                            <td>{{ $employee->hire_date }}</td>--}}
                                 {{--                            <td>{{ $employee->termination_date }}</td>--}}
                                 <td>{{ $employee->sin }}</td>
@@ -181,6 +193,52 @@
 
     @section('after_load')
         <script type="text/javascript">
+            function showPeriod(){
+                // var work_date = document.getElementById('work_date');
+                var freq = document.getElementById('frequency').value;
+                var payment_date = document.getElementById('payment_date').value;
+                var pay_period = document.getElementById('pay_period');
+                console.log(payment_date);
+                if (payment_date !== '') {
+                    // calculate number of days based on frequency
+                    var days_num = 0;
+                    switch (freq) {
+                        case 'DAILY':
+                            days_num = 1;
+                            break;
+                        case 'WEEKLY_52PP':
+                            days_num = 7;
+                            break;
+                        case 'BI_WEEKLY':
+                            days_num = 14;
+                            break;
+                        case 'SEMI_MONTHLY':
+                            days_num = 15;
+                            break;
+                        case 'MONTHLY_12PP':
+                            days_num = 30;
+                            break;
+                        case 'WEEKLY_53PP':
+                            days_num = 7;
+                            break;
+                        case 'BI_WEEKLY_27PP':
+                            days_num = 14;
+                            break;
+                        default:
+                            days_num = 0;
+                    }
+                    // console.log('days_num ', days_num);
+                    // console.log('freq ', freq);
+
+                    var first_date = new Date(payment_date);
+                    first_date.setDate((first_date.getDate() - days_num) + 1);
+                    first_date = first_date.toLocaleDateString("en-CA");
+
+                    pay_period.value = 'Payment period starting on: ' + first_date + ' and ending on: ' + payment_date;
+                //
+                }
+                // console.log('first date: ' + first_date)
+            }
             function payPeriod(){
                 // console.log('clicked');
                 var freq = document.getElementById('frequency').value;

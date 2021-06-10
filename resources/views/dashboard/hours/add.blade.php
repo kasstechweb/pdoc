@@ -156,11 +156,8 @@
 @endsection
 @section('after_load')
     <script type="text/javascript">
-        var work_date = document.getElementById('work_date');
-
-
         function showPeriod(){
-
+            var work_date = document.getElementById('work_date');
             var freq = document.getElementById('frequency').value;
             var work_date = document.getElementById('work_date').value;
             var pay_period = document.getElementById('pay_period');

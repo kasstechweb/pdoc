@@ -39,12 +39,22 @@ class ReportsController extends Controller
                     ->withErrors($validator)
                     ->withInput();
             }else { // pass validation
-                $setting = Setting::find(1);
-                $setting->stat_amount = $request->input('stat');
-                $setting->overtime_amount = $request->input('overtime');
-                $setting->max_cpp = $request->input('max_cpp');
-                $setting->max_ei = $request->input('max_ei');
-                $setting->save();
+                if ($request->input('settings')){
+                    $setting = Setting::find(1);
+                    $setting->stat_amount = $request->input('stat');
+                    $setting->overtime_amount = $request->input('overtime');
+                    $setting->max_cpp = $request->input('max_cpp');
+                    $setting->max_ei = $request->input('max_ei');
+                    $setting->save();
+                }else {
+                    $setting = new Setting();
+                    $setting->stat_amount = $request->input('stat');
+                    $setting->overtime_amount = $request->input('overtime');
+                    $setting->max_cpp = $request->input('max_cpp');
+                    $setting->max_ei = $request->input('max_ei');
+                    $setting->save();
+                }
+
 
                 $settings = Setting::where('id', 1)->first();
                 return redirect(route('settings'))
@@ -61,7 +71,12 @@ class ReportsController extends Controller
     public function paystubsForm(Request $request){
         $frequencies = DB::table('frequency')->get();
         if ($request->method() == 'POST') {
-            $employees = Employee::where('employer_id', Auth::id())->whereDate('termination_date', '>=', $request->input('payment_date'))->get();
+            $employees = Employee::where([
+                ['employer_id', '=', Auth::id()],
+                ['pay_frequency', '=', $request->input('frequency')]
+            ])
+                ->whereDate('termination_date', '>=', $request->input('payment_date'))
+                ->get();
 //            dd($employees);
             // get previous pay stubs same date and frequency using pay date and frequency
             $paystubs = Paystub::where([

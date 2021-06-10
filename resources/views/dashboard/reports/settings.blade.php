@@ -17,12 +17,20 @@
             <div class="card-body">
                 <form method="POST" action="{{ route('settings') }}">
                     @csrf
+                    @if($settings)
+                        <input type="hidden" value="1" name="settings">
+                    @else
+                        <input type="hidden" value="0" name="settings">
+                    @endif
                     <div class="form-row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="small mb-1" for="stat">Stat Holiday </label>
-                                <input class="form-control py-4 @error('stat') is-invalid @enderror" id="stat" type="text" name="stat" value="{{ $settings->stat_amount? $settings->stat_amount : old('stat') }}" required/>
-
+                                <label class="small mb-1" for="stat">Stat Holiday Rate (pay = rate x hour)</label>
+                                @if($settings)
+                                    <input class="form-control py-4 @error('stat') is-invalid @enderror" id="stat" type="text" name="stat" value="{{ $settings->stat_amount? $settings->stat_amount : old('stat') }}" required/>
+                                @else
+                                    <input class="form-control py-4 @error('stat') is-invalid @enderror" id="stat" type="text" name="stat" value="0" required/>
+                                @endif
                                 @error('stat')
                                 <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -32,8 +40,12 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="small mb-1" for="overtime">Over Time</label>
-                                <input class="form-control py-4 @error('overtime') is-invalid @enderror" id="overtime" type="text" name="overtime" value="{{ $settings->overtime_amount? $settings->overtime_amount :old('stat') }}" required/>
+                                <label class="small mb-1" for="overtime">Over Time (pay = rate x hour)</label>
+                                @if($settings)
+                                    <input class="form-control py-4 @error('overtime') is-invalid @enderror" id="overtime" type="text" name="overtime" value="{{ $settings->overtime_amount? $settings->overtime_amount :old('stat') }}" required/>
+                                @else
+                                    <input class="form-control py-4 @error('overtime') is-invalid @enderror" id="overtime" type="text" name="overtime" value="0" required/>
+                                @endif
 
                                 @error('overtime')
                                 <span class="invalid-feedback" role="alert">
@@ -48,7 +60,11 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="small mb-1" for="max_cpp">max CPP deduction amount</label>
-                                <input class="form-control py-4 @error('max_cpp') is-invalid @enderror" id="max_cpp" type="text" name="max_cpp" value="{{ $settings->max_cpp? $settings->max_cpp :old('max_cpp') }}" required/>
+                                @if($settings)
+                                    <input class="form-control py-4 @error('max_cpp') is-invalid @enderror" id="max_cpp" type="text" name="max_cpp" value="{{ $settings->max_cpp? $settings->max_cpp :old('max_cpp') }}" required/>
+                                @else
+                                    <input class="form-control py-4 @error('max_cpp') is-invalid @enderror" id="max_cpp" type="text" name="max_cpp" value="0" required/>
+                                @endif
 
                                 @error('max_cpp')
                                 <span class="invalid-feedback" role="alert">
@@ -60,7 +76,11 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="small mb-1" for="max_ei">max EI deduction amount</label>
-                                <input class="form-control py-4 @error('max_ei') is-invalid @enderror" id="max_ei" type="text" name="max_ei"  value="{{ $settings->max_ei? $settings->max_ei :old('max_ei') }}" required/>
+                                @if($settings)
+                                    <input class="form-control py-4 @error('max_ei') is-invalid @enderror" id="max_ei" type="text" name="max_ei"  value="{{ $settings->max_ei? $settings->max_ei :old('max_ei') }}" required/>
+                                @else
+                                    <input class="form-control py-4 @error('max_ei') is-invalid @enderror" id="max_ei" type="text" name="max_ei"  value="0" required/>
+                                @endif
 
                                 @error('max_ei')
                                 <span class="invalid-feedback" role="alert">
