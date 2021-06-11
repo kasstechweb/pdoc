@@ -32,6 +32,7 @@ class ReportsController extends Controller
                 'overtime' => 'required|numeric|between:0,99.99',
                 'max_cpp' => 'required|numeric|between:0,999.99',
                 'max_ei' => 'required|numeric|between:0,999.99',
+                'vac_perc' => 'required|numeric|between:0,999.99',
             ], $messages);
 
             if ($validator->fails()) {
@@ -45,6 +46,7 @@ class ReportsController extends Controller
                     $setting->overtime_amount = $request->input('overtime');
                     $setting->max_cpp = $request->input('max_cpp');
                     $setting->max_ei = $request->input('max_ei');
+                    $setting->vacation_pay_percentage = $request->input('vac_perc');
                     $setting->save();
                 }else {
                     $setting = new Setting();
@@ -52,6 +54,7 @@ class ReportsController extends Controller
                     $setting->overtime_amount = $request->input('overtime');
                     $setting->max_cpp = $request->input('max_cpp');
                     $setting->max_ei = $request->input('max_ei');
+                    $setting->vacation_pay_percentage = $request->input('vac_perc');
                     $setting->save();
                 }
 
@@ -139,7 +142,7 @@ class ReportsController extends Controller
 //        dd($settings->stat_amount);
         // do calculations
         $hourly = round($total_hours * $employee_rate, 2);
-        $vac_pay = round($hourly * 0.04, 2);
+        $vac_pay = round($hourly * ($settings->vacation_pay_percentage/100), 2); //0.04
         $stat_pay = round($total_stat_hours * ($employee_rate * $settings->stat_amount), 2); //TODO::::: get it from settings
         $overtime_pay = round($total_overtime_hours * ($employee_rate * $settings->overtime_amount), 2); // TODO::::::: get from settings
 
@@ -155,7 +158,7 @@ class ReportsController extends Controller
 
         $employee_cpp = $pdoc_result['values']['CPP'];
         $employee_ei = $pdoc_result['values']['EI'];
-        $federal_tax = $pdoc_result['values']['federalTax'];
+        $federal_tax = $pdoc_result['values']['federalTax'] + $pdoc_result['values']['provincialTax'];
         $employer_cpp = $pdoc_result['values2']['values']['employerCPP'];
         $employer_ei = $pdoc_result['values2']['values']['employerEI'];
 //

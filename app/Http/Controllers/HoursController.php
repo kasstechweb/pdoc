@@ -30,7 +30,7 @@ class HoursController extends Controller
         if ($request->method() == 'POST'){
             $validator = Validator::make($request->all(), [
                 'work_date' => 'required',
-                'work_hours' => 'required|numeric|between:0,99.99',
+                'work_hours' => 'required|numeric|between:0,999.99',
 //                'over_time' => 'numeric|between:0,99.99',
             ]);
 

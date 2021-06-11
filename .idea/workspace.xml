@@ -12,10 +12,10 @@
   <component name="ChangeListManager">
     <list default="true" id="3f4fd3e6-61ca-443e-855e-b1ffe3375a0a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/HoursController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/HoursController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ReportsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ReportsController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2021_05_18_130004_create_settings_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_05_18_130004_create_settings_table.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/cra-cookies.txt" beforeDir="false" afterPath="$PROJECT_DIR$/public/cra-cookies.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/dashboard/hours/add.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/dashboard/hours/add.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/dashboard/reports/paystubs_form.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/dashboard/reports/paystubs_form.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/dashboard/reports/settings.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/dashboard/reports/settings.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -207,7 +207,7 @@
       <workItem from="1621506127231" duration="24785000" />
       <workItem from="1622040076716" duration="9125000" />
       <workItem from="1623252787034" duration="490000" />
-      <workItem from="1623256128017" duration="14031000" />
+      <workItem from="1623256128017" duration="20505000" />
     </task>
     <servers />
   </component>

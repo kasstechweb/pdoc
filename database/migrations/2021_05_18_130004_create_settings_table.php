@@ -17,6 +17,7 @@ class CreateSettingsTable extends Migration
             $table->id();
             $table->decimal('stat_amount');
             $table->decimal('overtime_amount');
+            $table->decimal('vacation_pay_percentage');
             $table->decimal('max_cpp');
             $table->decimal('max_ei');
             $table->timestamps();

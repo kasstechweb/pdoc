@@ -91,6 +91,25 @@
                         </div>
                     </div>
 
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="small mb-1" for="vac_perc">Vacation pay percentage %</label>
+                                @if($settings)
+                                    <input class="form-control py-4 @error('vac_perc') is-invalid @enderror" id="vac_perc" type="text" name="vac_perc" value="{{ $settings->vacation_pay_percentage? $settings->vacation_pay_percentage :old('vacation_pay_percentage') }}" required/>
+                                @else
+                                    <input class="form-control py-4 @error('vac_perc') is-invalid @enderror" id="vac_perc" type="text" name="vac_perc" value="0" required/>
+                                @endif
+
+                                @error('vac_perc')
+                                <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="form-group mt-4 mb-0">
                         <button type="submit" class="btn btn-primary btn-block">
                             Update Settings
