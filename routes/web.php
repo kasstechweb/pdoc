@@ -18,10 +18,10 @@ use App\Http\Controllers\ReportsController;
 |
 */
 
-Route::get('/', function () {
-    return view('auth.login');
-});
-
+//Route::get('/', function () {
+//    return view('auth.login');
+//});
+Route::get('/', [DashboardController::class, 'viewHome']);
 Auth::routes();
 
 Route::get('/home', [DashboardController::class, 'viewHome'])->name('home');

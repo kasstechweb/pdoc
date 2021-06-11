@@ -29,7 +29,7 @@ class HoursController extends Controller
 
         if ($request->method() == 'POST'){
             $validator = Validator::make($request->all(), [
-                'work_date' => 'required',
+                'pay_period' => 'required',
                 'work_hours' => 'required|numeric|between:0,999.99',
 //                'over_time' => 'numeric|between:0,99.99',
             ]);
@@ -40,7 +40,7 @@ class HoursController extends Controller
                     ->withInput();
             }else { // pass validation
                 $hours = new Hour();
-                $hours->work_date = $request->input('work_date');
+                $hours->work_date = $request->input('pay_period');
                 $hours->work_hours = $request->input('work_hours');
 
                 if ($request->input('stat_holiday') == 'on' && $request->input('over_time') == 'on') {
