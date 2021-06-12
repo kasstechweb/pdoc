@@ -55,6 +55,7 @@
             <div id="layoutSidenav_nav">
                 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                     <div class="sb-sidenav-menu">
+                        @if(Auth::check())
                         <div class="nav">
                             <div class="sb-sidenav-menu-heading">Core</div>
                             <a class="nav-link @if(Route::current()->getName() == 'home') active @endif" href="{{route('home')}}">
@@ -189,13 +190,16 @@
                         </div>
                     </div>
                     -->
-                    <div class="sb-sidenav-footer">
-                        <div class="small">Logged in as:</div>
-                        @if(Auth::check())
-                            {{ Auth::user()->name }}
-                        @else
-                            Guest
-                        @endif
+                            <div class="sb-sidenav-footer">
+                                <div class="small">Logged in as:</div>
+                                @if(Auth::check())
+                                    {{ Auth::user()->name }}
+                                @else
+                                    Guest
+                                @endif
+                            @endif
+                            </div>
+                        </div>
                     </div>
                 </nav>
             </div>
