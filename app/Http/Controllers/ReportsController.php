@@ -41,15 +41,17 @@ class ReportsController extends Controller
                     ->withInput();
             }else { // pass validation
                 if ($request->input('settings')){
-                    $setting = Setting::find(1);
+                    $setting = Setting::where('employer_id', '=', Auth::id());
+                    $setting->employer_id = Auth::id();
                     $setting->stat_amount = $request->input('stat');
                     $setting->overtime_amount = $request->input('overtime');
                     $setting->max_cpp = $request->input('max_cpp');
                     $setting->max_ei = $request->input('max_ei');
                     $setting->vacation_pay_percentage = $request->input('vac_perc');
                     $setting->save();
-                }else {
+                }else { // save settings for the first time
                     $setting = new Setting();
+                    $setting->employer_id = Auth::id();
                     $setting->stat_amount = $request->input('stat');
                     $setting->overtime_amount = $request->input('overtime');
                     $setting->max_cpp = $request->input('max_cpp');
@@ -59,13 +61,13 @@ class ReportsController extends Controller
                 }
 
 
-                $settings = Setting::where('id', 1)->first();
+                $settings = Setting::where('employer_id', Auth::id())->first();
                 return redirect(route('settings'))
                     ->with('msg', 'settings update Success!')
                     ->with('settings', $settings);
             }
-        }else {
-            $settings = Setting::where('id', 1)->first();
+        }else { // get request
+            $settings = Setting::where('employer_id', Auth::id())->first();
             return view('dashboard.reports.settings')
                 ->with('settings', $settings);
         }

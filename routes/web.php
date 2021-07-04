@@ -6,6 +6,7 @@ use App\Http\Controllers\EmployerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HoursController;
 use App\Http\Controllers\ReportsController;
+use App\Http\Controllers\ApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,3 +58,4 @@ Route::get('/profile', [EmployerController::class, 'viewProfile'])->name('profil
 Route::post('/profile', [EmployerController::class, 'updateProfile'])->name('update_profile');
 
 
+Route::get('/api/gettest', [ApiController::class, 'getTest'])->name('api_gettest');
