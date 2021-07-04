@@ -25,6 +25,7 @@ class CreateEmployeeTable extends Migration
             $table->decimal('pay_rate')->unsigned();
             $table->boolean('ei_exempt');
             $table->boolean('cpp_exempt');
+            $table->boolean('ftax_exempt');
             $table->unsignedBigInteger('employer_id');
             $table->string('pay_frequency');
             $table->timestamps();

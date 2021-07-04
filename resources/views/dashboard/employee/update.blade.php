@@ -139,6 +139,17 @@
                             @enderror
                         </div>
                     </div>
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input class="custom-control-input @error('ftax_exempt') is-invalid @enderror" id="ftax_exempt" type="checkbox" name="ftax_exempt"  {{ $employee->ftax_exempt ? 'checked' : '' }} />
+                            <label class="custom-control-label" for="ftax_exempt">Is Employee Tax exempt</label>
+                            @error('ftax_exempt')
+                            <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                            @enderror
+                        </div>
+                    </div>
                     <div class="form-group mt-4 mb-0">
                         <button type="submit" class="btn btn-primary btn-block">
                             Update Employee

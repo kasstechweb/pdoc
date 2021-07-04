@@ -70,6 +70,11 @@ class EmployeeController extends Controller
                 }else {
                     $employee->cpp_exempt = 0;
                 }
+                if ($request->input('ftax_exempt') == 'on') {
+                    $employee->ftax_exempt = 1;
+                }else {
+                    $employee->ftax_exempt = 0;
+                }
 
                 $employee->pay_frequency = $request->input('frequency');
                 $employee->employer_id = auth()->id();
@@ -127,6 +132,12 @@ class EmployeeController extends Controller
                     $employee->cpp_exempt = 1;
                 }else {
                     $employee->cpp_exempt = 0;
+                }
+
+                if ($request->input('ftax_exempt') == 'on') {
+                    $employee->ftax_exempt = 1;
+                }else {
+                    $employee->ftax_exempt = 0;
                 }
 
                 $employee->pay_frequency = $request->input('frequency');

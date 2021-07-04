@@ -124,6 +124,7 @@ class ReportsController extends Controller
         $employee_name = $employee->name;
         $employee_cpp_exempt = $employee->cpp_exempt;
         $employee_ei_exempt = $employee->ei_exempt;
+        $employee_ftax_exempt = $employee->ftax_exempt;
 
         //  getting employee work hours
         $hours = Hour::where('employee_id', $employee_id)->whereBetween('work_date', [$start_date, $pay_date])->get();
@@ -193,7 +194,12 @@ class ReportsController extends Controller
         }else if ($settings->max_ei >= ($ytd['ei'] + $employee_ei)) {
             $net_pay -= $employee_ei;
         }
-        $net_pay -= $federal_tax;
+
+        // check if ftax is enabled
+        if (!$employee_ftax_exempt){
+            $net_pay -= $federal_tax;
+        }
+
         //        dd($total_hourly);
         //        $hourly = hours
 
@@ -220,6 +226,7 @@ class ReportsController extends Controller
         }else {
             $paystub->cpp = 0;
         }
+
         if ($settings->max_ei >= ($ytd['ei'] + $employee_ei) && !$employee_ei_exempt) {
             $paystub->ei = $employee_ei;
         }elseif ($settings->max_ei >= ($ytd['ei']) && $ytd['ei'] != $settings->max_ei  && !$employee_ei_exempt){
@@ -232,7 +239,12 @@ class ReportsController extends Controller
             $paystub->ei = 0;
         }
 
-        $paystub->federal_tax = $federal_tax;
+        if (!$employee_ftax_exempt){
+            $paystub->federal_tax = $federal_tax;
+        }else {
+            $paystub->federal_tax = 0;
+        }
+
         $paystub->net_pay = $net_pay;
         $paystub->pay_frequency = $frequency;
         $paystub->employer_cpp = $employer_cpp;
