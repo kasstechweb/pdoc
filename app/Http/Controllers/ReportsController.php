@@ -41,7 +41,7 @@ class ReportsController extends Controller
                     ->withInput();
             }else { // pass validation
                 if ($request->input('settings')){
-                    $setting = Setting::where('employer_id', '=', Auth::id());
+                    $setting = Setting::where('employer_id', '=', Auth::id())->first();
                     $setting->employer_id = Auth::id();
                     $setting->stat_amount = $request->input('stat');
                     $setting->overtime_amount = $request->input('overtime');
