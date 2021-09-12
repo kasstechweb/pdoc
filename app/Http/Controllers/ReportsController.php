@@ -141,7 +141,14 @@ class ReportsController extends Controller
         }
 
         // get from settings
-        $settings = Setting::where('id', 1)->first();
+        $settings = Setting::where('employer_id', Auth::id())->first();
+
+        if ($settings == null){
+            return response()->json(array(
+                'status' => 'error',
+                'msg' => 'Please Update Settings!',
+            ), 500);
+        }
 //        dd($settings->stat_amount);
         // do calculations
         $hourly = round($total_hours * $employee_rate, 2);

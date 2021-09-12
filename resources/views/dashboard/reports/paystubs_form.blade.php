@@ -331,9 +331,13 @@
                             //data.pdoc_result.status
                             console.log(data)
                         },
-                        error: function () {
-                            console.log('error');
-                            showErrorMessage('Error in remote calculator, please try again!');
+                        error: function (e) {
+                            console.log(e.responseJSON.msg);
+                            if(e.responseJSON.status == 'error'){
+                                showErrorMessage(e.responseJSON.msg);
+                            }else {
+                                showErrorMessage('Error in remote calculator, please try again!');
+                            }
                             btn_text.style.display = 'block';
                             spinner.style.display = 'none';
                         }
