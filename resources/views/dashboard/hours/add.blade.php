@@ -81,7 +81,7 @@
                                     <option value="">Select month and year above</option>
                                     {{--                                    <option value="2021-01-15">1: 2021-01-01 to 2021-01-15</option>--}}
                                 </select>
-
+                                <input style="display: none" class="form-control py-4 @error('pay_period') is-invalid @enderror" id="pay_period_input" type="date" name="pay_period" value="" required/>
                                 @error('year')
                                 <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -202,6 +202,7 @@
                 var options = '';
                 switch (option_value) {
                     case 'DAILY':
+                        document.getElementById('pay_period_input').remove();
                         var month = document.getElementById('month').value;
                         if (!isLeap(year)){
                             for (var i = 1; i <= normal_year[month-1]; i++) {
@@ -220,6 +221,7 @@
                         pay_period.innerHTML = options;
                         break;
                     case 'WEEKLY_52PP':
+                        document.getElementById('pay_period_input').remove();
                         for (var i = 1; i <= 52; i++) {
                             var end_date = new Date(year + '-' + '01-01');
                             end_date.setDate((end_date.getDate() + (7 * i)) - 1);
@@ -235,21 +237,24 @@
                         pay_period.innerHTML = options;
                         break;
                     case 'BI_WEEKLY':
-                        for (var i = 1; i <= 26; i++) {
-                            var end_date = new Date(year + '-' + '01-01');
-                            end_date.setDate((end_date.getDate() + (14 * i)) - 1);
-                            end_date = end_date.toLocaleDateString("en-CA");
-
-                            var start_date = new Date(end_date);
-                            start_date.setDate((start_date.getDate() - 14 ) + 1);
-                            start_date = start_date.toLocaleDateString("en-CA");
-
-                            options += '<option value="' + end_date +'"> '+ zeroPad(i, 2) + ': ' + start_date + ' to ' + end_date ;
-                            // console.log(i + ' start date: ' + start_date + ' end date: ' + end_date)
-                        }
-                        pay_period.innerHTML = options;
+                        // for (var i = 1; i <= 26; i++) {
+                        //     var end_date = new Date(year + '-' + '01-01');
+                        //     end_date.setDate((end_date.getDate() + (14 * i)) - 1);
+                        //     end_date = end_date.toLocaleDateString("en-CA");
+                        //
+                        //     var start_date = new Date(end_date);
+                        //     start_date.setDate((start_date.getDate() - 14 ) + 1);
+                        //     start_date = start_date.toLocaleDateString("en-CA");
+                        //
+                        //     options += '<option value="' + end_date +'"> '+ zeroPad(i, 2) + ': ' + start_date + ' to ' + end_date ;
+                        //     // console.log(i + ' start date: ' + start_date + ' end date: ' + end_date)
+                        // }
+                        // pay_period.innerHTML = options;
+                        document.getElementById('pay_period').remove();
+                        document.getElementById('pay_period_input').style.display = 'block';
                         break;
                     case 'SEMI_MONTHLY':
+                        document.getElementById('pay_period_input').remove();
                         for (var i = 1; i <= 12; i++) {
                             var start_date = year + '-' + zeroPad(i, 2) + '-01';
                             var middle_date = year + '-' + zeroPad(i, 2) + '-15';
@@ -265,6 +270,7 @@
                         pay_period.innerHTML = options;
                         break;
                     case 'MONTHLY_12PP':
+                        document.getElementById('pay_period_input').remove();
                         for (var i = 1; i <= 12; i++) {
                             var start_date = year + '-' + zeroPad(i, 2) + '-01';
                             if (!isLeap(year)) {
